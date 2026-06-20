@@ -316,9 +316,9 @@ export default function MissionsHub() {
         <div className="flex-1 space-y-3.5 w-full">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <h4 className="font-extrabold text-sm uppercase text-sand-800 dark:text-sand-400 tracking-wider flex items-center gap-2">
+              <h2 className="font-extrabold text-sm uppercase text-sand-800 dark:text-sand-400 tracking-wider flex items-center gap-2">
                 <Sprout className="h-4 w-4 text-emerald-500" /> Active Garden Preview
-              </h4>
+              </h2>
               <p className="text-base font-black text-emerald-600 dark:text-emerald-400 mt-0.5">
                 Level {gardenLevel} — {getGardenPreviewVisual(gardenLevel).label}
               </p>

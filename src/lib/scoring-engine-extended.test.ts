@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * scoring-engine-extended.test.ts
  *

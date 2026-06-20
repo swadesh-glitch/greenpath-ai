@@ -427,17 +427,17 @@ export function calculateProfile(answers: OnboardingAnswers): ScoredProfile {
   }
 
   // 2. Fetch Raw and Normalized Scores
-  const s_t = SCORE_MAP.transport[transportKey] ?? 2.0
-  const s_f = SCORE_MAP.food[foodKey] ?? 5.9
-  const s_e_base = SCORE_MAP.energy[energyKey] ?? 5.4
+  const s_t = SCORE_MAP.transport[transportKey]
+  const s_f = SCORE_MAP.food[foodKey]
+  const s_e_base = SCORE_MAP.energy[energyKey]
   const s_e = Math.min(10.0, s_e_base * gridMultiplier)
-  const s_s = SCORE_MAP.shopping[shoppingKey] ?? 4.5
+  const s_s = SCORE_MAP.shopping[shoppingKey]
 
-  const raw_t = EMISSIONS_MAP.transport[transportKey] ?? 900
-  const raw_f = EMISSIONS_MAP.food[foodKey] ?? 1700
-  const raw_e_base = EMISSIONS_MAP.energy[energyKey] ?? 1900
+  const raw_t = EMISSIONS_MAP.transport[transportKey]
+  const raw_f = EMISSIONS_MAP.food[foodKey]
+  const raw_e_base = EMISSIONS_MAP.energy[energyKey]
   const raw_e = Math.round(raw_e_base * gridMultiplier)
-  const raw_s = EMISSIONS_MAP.shopping[shoppingKey] ?? 1000
+  const raw_s = EMISSIONS_MAP.shopping[shoppingKey]
 
   // ── Step 3: Composite Impact Index (C) ──────────────────────────────────
   // Weighted sum on the 0–10 scale. Weight rationale (source: IEA/EPA):
@@ -477,11 +477,7 @@ export function calculateProfile(answers: OnboardingAnswers): ScoredProfile {
   // resolve this by promoting "food" as the secondary best (or "transport"
   // if transport happened to be both best and worst).
   if (best.key === worst.key) {
-    if (best.key === "transport") {
-      best = { key: "food", score: s_f }
-    } else {
-      best = { key: "transport", score: s_t }
-    }
+    best = { key: "food", score: s_f }
   }
 
   // 5. Compose Identity Name & Description

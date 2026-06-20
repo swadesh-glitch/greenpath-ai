@@ -621,7 +621,7 @@ export default function Onboarding() {
               </div>
 
               <div>
-                <h4 className="font-black text-[10px] text-white text-left leading-none">Clover</h4>
+                <div className="font-black text-[10px] text-white text-left leading-none">Clover</div>
                 <p className="text-[7.5px] text-emerald-400 font-bold uppercase tracking-widest mt-0.5">AI Advisor</p>
               </div>
             </motion.div>

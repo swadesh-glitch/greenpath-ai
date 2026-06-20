@@ -274,9 +274,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // ─────────────────────────────────────────────
   // Actions
   // ─────────────────────────────────────────────
-  const setOnboardingStep = (step: number) => setOnboardingStepState(step)
+  const setOnboardingStep = useCallback((step: number) => {
+    setOnboardingStepState(step)
+  }, [])
 
-  const completeOnboarding = (identityId: string, name: string) => {
+  const completeOnboarding = useCallback((identityId: string, name: string) => {
     const identity = climateIdentities.find((id) => id.id === identityId) || climateIdentities[0]
     setSelectedIdentity(identity)
     setProfile((prev) => ({
@@ -286,9 +288,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       stats: { ...prev.stats, totalPoints: 50, co2SavedKg: 0, level: 1 },
     }))
     setIsOnboarded(true)
-  }
+  }, [])
 
-  const completeAIOnboarding = (
+  const completeAIOnboarding = useCallback((
     name: string,
     answers: OnboardingAnswers,
     generatedId: GeneratedIdentity,
@@ -308,9 +310,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       stats: { ...prev.stats, totalPoints: 50, co2SavedKg: 0, level: 1 },
     }))
     setIsOnboarded(true)
-  }
+  }, [])
 
-  const completeMission = (missionId: string) => {
+  const completeMission = useCallback((missionId: string) => {
     setMissions((prev) =>
       prev.map((m) => {
         if (m.id !== missionId || m.completed) return m
@@ -319,9 +321,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return { ...m, completed: true }
       })
     )
-  }
+  }, [updateStreak, addReward])
 
-  const completeDailyAction = (actionId: string) => {
+  const completeDailyAction = useCallback((actionId: string) => {
     setDailyActions((prev) =>
       prev.map((a) => {
         if (a.id !== actionId || a.completed) return a
@@ -330,27 +332,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return { ...a, completed: true }
       })
     )
-  }
+  }, [updateStreak, addReward])
 
-  const completeWeeklyChallenge = () => {
+  const completeWeeklyChallenge = useCallback(() => {
     if (!weeklyChallenge || weeklyChallenge.completed) return
     const bonus = updateStreak()
     addReward(weeklyChallenge.points + bonus, weeklyChallenge.co2SavingsKg)
     setWeeklyChallenge((prev) => (prev ? { ...prev, completed: true } : prev))
-  }
+  }, [weeklyChallenge, updateStreak, addReward])
 
-  const refreshDailyActions = () => {
+  const refreshDailyActions = useCallback(() => {
     if (hasRerolledToday) return
     const today = getTodayStr()
     // Use offset seed so re-roll gives different 3 than initial
     const offsetSeed = today + "_reroll"
     setDailyActions(pickDailyActions(offsetSeed))
     setHasRerolledToday(true)
-  }
+  }, [hasRerolledToday])
 
-  const markGardenIntroSeen = () => setHasSeenGardenIntro(true)
+  const markGardenIntroSeen = useCallback(() => {
+    setHasSeenGardenIntro(true)
+  }, [])
 
-  const resetApp = () => {
+  const resetApp = useCallback(() => {
     setIsOnboarded(false)
     setOnboardingStepState(0)
     setSelectedIdentity(null)
@@ -368,41 +372,70 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentStreak(0)
     setLastActiveDate(null)
     if (typeof window !== "undefined") localStorage.removeItem(LS_KEY)
-  }
+  }, [])
+
+  const contextValue = React.useMemo(() => ({
+    isOnboarded,
+    onboardingStep,
+    profile,
+    missions,
+    gardenLevel,
+    points,
+    co2SavedKg,
+    selectedIdentity,
+    dailyActions,
+    weeklyChallenge,
+    lastRefreshedDate,
+    hasRerolledToday,
+    hasSeenGardenIntro,
+    currentStreak,
+    lastActiveDate,
+    onboardingAnswers,
+    generatedIdentity,
+    carbonStory,
+    climateTwin,
+    setOnboardingStep,
+    completeOnboarding,
+    completeAIOnboarding,
+    completeMission,
+    completeDailyAction,
+    completeWeeklyChallenge,
+    refreshDailyActions,
+    markGardenIntroSeen,
+    resetApp,
+  }), [
+    isOnboarded,
+    onboardingStep,
+    profile,
+    missions,
+    gardenLevel,
+    points,
+    co2SavedKg,
+    selectedIdentity,
+    dailyActions,
+    weeklyChallenge,
+    lastRefreshedDate,
+    hasRerolledToday,
+    hasSeenGardenIntro,
+    currentStreak,
+    lastActiveDate,
+    onboardingAnswers,
+    generatedIdentity,
+    carbonStory,
+    climateTwin,
+    setOnboardingStep,
+    completeOnboarding,
+    completeAIOnboarding,
+    completeMission,
+    completeDailyAction,
+    completeWeeklyChallenge,
+    refreshDailyActions,
+    markGardenIntroSeen,
+    resetApp,
+  ])
 
   return (
-    <AppContext.Provider
-      value={{
-        isOnboarded,
-        onboardingStep,
-        profile,
-        missions,
-        gardenLevel,
-        points,
-        co2SavedKg,
-        selectedIdentity,
-        dailyActions,
-        weeklyChallenge,
-        lastRefreshedDate,
-        hasRerolledToday,
-        hasSeenGardenIntro,
-        currentStreak,
-        lastActiveDate,
-        onboardingAnswers,
-        generatedIdentity,
-        carbonStory,
-        climateTwin,
-        setOnboardingStep,
-        completeOnboarding,
-        completeAIOnboarding,
-        completeMission,
-        completeDailyAction,
-        completeWeeklyChallenge,
-        refreshDailyActions,
-        markGardenIntroSeen,
-        resetApp,
-      }}
-    >
+    <AppContext.Provider value={contextValue}>
       {children}
     </AppContext.Provider>
   )

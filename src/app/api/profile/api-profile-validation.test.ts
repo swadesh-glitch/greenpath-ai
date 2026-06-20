@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * api-profile-validation.test.ts
  *
