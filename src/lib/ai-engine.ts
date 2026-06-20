@@ -1,3 +1,8 @@
+/**
+ * @file ai-engine.ts
+ * @responsibility Definition of data contracts and response structures for the AI Carbon Coach
+ * including generated archetypes, climate twin projections, and customized signature missions.
+ */
 export interface OnboardingAnswers {
   city: string
   transport: string

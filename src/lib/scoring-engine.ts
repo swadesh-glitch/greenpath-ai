@@ -1,4 +1,10 @@
+/**
+ * @file scoring-engine.ts
+ * @responsibility Core mathematical scoring engine that analyzes user habits, applies grid intensity 
+ * based on city location, and generates personalized carbon footprints, climate twins, and targeted missions.
+ */
 import { OnboardingAnswers, GeneratedIdentity, ClimateTwinData, AIMission } from "./ai-engine"
+
 
 // ─────────────────────────────────────────────
 // Type Definitions

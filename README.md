@@ -65,6 +65,41 @@ To experience the full loop: complete onboarding, then visit `/missions` and log
 
 ---
 
+## 📂 PROJECT STRUCTURE & ARCHITECTURE
+
+The repository follows a clean, component-oriented structure where responsibilities are separated between rendering components, data models, state storage, and the math engine:
+
+```
+├── public/                 # Static public assets (compressed nature backgrounds)
+├── src/
+│   ├── app/                # Next.js App Router routes & pages
+│   │   ├── analysis/       # /analysis page & Climate Twin simulator
+│   │   ├── api/            # API Route handlers (Zod profile validation)
+│   │   ├── garden/         # /garden page (3D Carbon Garden scene wrapper)
+│   │   ├── identity/       # /identity page (detailed profile card summary)
+│   │   ├── missions/       # /missions page (Signature & Daily missions logging)
+│   │   └── onboarding/     # /onboarding page (Conversational chat onboarding)
+│   ├── components/         # Reusable React components
+│   │   ├── climate/        # Custom progress bars, badges, and dials
+│   │   ├── garden/         # Three.js / React Three Fiber low-poly diorama
+│   │   ├── shared/         # Common navigation, reset actions, and overlays
+│   │   ├── storytelling/   # Dynamic background globe rotation map
+│   │   └── ui/             # Generic primitive UI elements (cards, buttons, sliders)
+│   ├── data/               # Static mock data, enums, and daily action pools
+│   ├── hooks/              # Custom React hooks (device sizing, dimensions)
+│   ├── lib/                # Mathematical engine & core logic helpers
+│   │   ├── ai-engine.ts    # AI Carbon Coach types & contracts
+│   │   ├── constants.ts    # Central levels and threshold constants
+│   │   └── scoring-engine.ts # Carbon scoring & Grid intensity compiler logic
+│   ├── store/              # Client-side React Context state
+│   │   └── AppContext.tsx  # Central AppProvider with localStorage caching
+│   └── styles/             # Modular Tailwind/CSS specific configurations
+├── vitest.config.ts        # Test runner & JSDOM environment config
+└── package.json            # Scripts, dependencies, and testing configurations
+```
+
+---
+
 ## 🚀 GETTING STARTED & LOCAL RUN
 
 ### 1. Install Dependencies

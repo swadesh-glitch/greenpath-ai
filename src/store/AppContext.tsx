@@ -1,5 +1,11 @@
 "use client"
 
+/**
+ * @file AppContext.tsx
+ * @responsibility Application-wide React state provider managing user profile data, carbon points,
+ * completed missions, streaks, and dynamic garden level calculations with localStorage synchronization.
+ */
+
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react"
 import { mockUser, UserProfile } from "@/data/mock-user"
 import { mockMissions } from "@/data/mock-missions"
