@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from "react"
+import React, { act } from "react"
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { render, fireEvent, screen } from "@testing-library/react"
 import { axe } from "vitest-axe"
@@ -43,11 +43,15 @@ describe("Navigation Component", () => {
   })
 
   it("renders non-onboarded navigation links", () => {
-    const { container } = render(
-      <AppProvider>
-        <Navigation />
-      </AppProvider>
-    )
+    let container
+    act(() => {
+      const rendered = render(
+        <AppProvider>
+          <Navigation />
+        </AppProvider>
+      )
+      container = rendered.container
+    })
 
     expect(screen.getByText("GreenPath")).toBeDefined()
     expect(screen.getByText("How It Works")).toBeDefined()
@@ -63,11 +67,13 @@ describe("Navigation Component", () => {
     }
     localStorage.setItem("greenpath_app_state", JSON.stringify(state))
 
-    render(
-      <AppProvider>
-        <Navigation />
-      </AppProvider>
-    )
+    act(() => {
+      render(
+        <AppProvider>
+          <Navigation />
+        </AppProvider>
+      )
+    })
 
     expect(screen.getByText("Climate Identity")).toBeDefined()
     expect(screen.getByText("Carbon Story")).toBeDefined()
@@ -77,11 +83,15 @@ describe("Navigation Component", () => {
   })
 
   it("passes accessibility compliance checks", async () => {
-    const { container } = render(
-      <AppProvider>
-        <Navigation />
-      </AppProvider>
-    )
+    let container
+    act(() => {
+      const rendered = render(
+        <AppProvider>
+          <Navigation />
+        </AppProvider>
+      )
+      container = rendered.container
+    })
     const results = await axe(container)
     expect(results.violations).toEqual([])
   })
@@ -103,12 +113,18 @@ describe("LockedScreenPreview Component", () => {
 
 describe("Counter Component", () => {
   it("renders numeric value correctly", () => {
-    render(<Counter value={100} />)
+    act(() => {
+      render(<Counter value={100} />)
+    })
     expect(screen.getByText("100")).toBeDefined()
   })
 
   it("passes accessibility compliance checks", async () => {
-    const { container } = render(<Counter value={100} />)
+    let container
+    act(() => {
+      const rendered = render(<Counter value={100} />)
+      container = rendered.container
+    })
     const results = await axe(container)
     expect(results.violations).toEqual([])
   })
@@ -119,24 +135,34 @@ describe("ResetDemoButton Component", () => {
     const state = { isOnboarded: true }
     localStorage.setItem("greenpath_app_state", JSON.stringify(state))
 
-    render(
-      <AppProvider>
-        <ResetDemoButton />
-      </AppProvider>
-    )
+    act(() => {
+      render(
+        <AppProvider>
+          <ResetDemoButton />
+        </AppProvider>
+      )
+    })
 
     const btn = screen.getByRole("button")
     expect(btn).toBeDefined()
-    fireEvent.click(btn)
+    
+    act(() => {
+      fireEvent.click(btn)
+    })
+    
     expect(screen.queryByRole("button")).toBeNull()
   })
 
   it("passes accessibility compliance checks", async () => {
-    const { container } = render(
-      <AppProvider>
-        <ResetDemoButton />
-      </AppProvider>
-    )
+    let container
+    act(() => {
+      const rendered = render(
+        <AppProvider>
+          <ResetDemoButton />
+        </AppProvider>
+      )
+      container = rendered.container
+    })
     const results = await axe(container)
     expect(results.violations).toEqual([])
   })

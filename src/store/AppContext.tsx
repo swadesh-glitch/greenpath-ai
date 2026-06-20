@@ -14,6 +14,7 @@ import { OnboardingAnswers, GeneratedIdentity, ClimateTwinData, AIMission } from
 import { DailyEcoAction, pickDailyActions } from "@/data/daily-eco-actions"
 import { WeeklyChallenge, getWeeklyChallenge } from "@/data/weekly-challenges"
 import { LEVEL_THRESHOLDS } from "@/lib/constants"
+import { z } from "zod"
 
 // ─────────────────────────────────────────────
 // Helpers
@@ -47,13 +48,44 @@ interface PersistedState {
   climateTwin: ClimateTwinData | null
 }
 
+const PersistedStateSchema = z.object({
+  isOnboarded: z.boolean().optional(),
+  profileName: z.string().optional(),
+  profileClimateIdentity: z.string().optional(),
+  totalPoints: z.number().optional(),
+  co2SavedKg: z.number().optional(),
+  missions: z.array(z.any()).optional(),
+  dailyActions: z.array(z.any()).optional(),
+  weeklyChallenge: z.any().nullable().optional(),
+  lastRefreshedDate: z.string().nullable().optional(),
+  hasSeenGardenIntro: z.boolean().optional(),
+  currentStreak: z.number().optional(),
+  lastActiveDate: z.string().nullable().optional(),
+  hasRerolledToday: z.boolean().optional(),
+  onboardingAnswers: z.any().nullable().optional(),
+  generatedIdentity: z.any().nullable().optional(),
+  carbonStory: z.string().nullable().optional(),
+  climateTwin: z.any().nullable().optional(),
+})
+
 function loadFromStorage(): Partial<PersistedState> {
   if (typeof window === "undefined") return {}
   try {
     const raw = localStorage.getItem(LS_KEY)
     if (!raw) return {}
-    return JSON.parse(raw) as Partial<PersistedState>
-  } catch {
+    const parsed = JSON.parse(raw)
+    const result = PersistedStateSchema.safeParse(parsed)
+    if (!result.success) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn("localStorage schema validation failed, resetting state:", result.error)
+      }
+      return {}
+    }
+    return result.data as Partial<PersistedState>
+  } catch (err) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn("Failed to load or parse from localStorage:", err)
+    }
     return {}
   }
 }
