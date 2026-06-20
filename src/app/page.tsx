@@ -6,8 +6,8 @@ import dynamic from "next/dynamic"
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion"
 import { Car, Utensils, Zap, ShoppingBag, ArrowRight, Sparkles, Sprout, Target, Shield, Trees, Compass } from "lucide-react"
 
-// Dynamically import Three.js Globe component with SSR disabled to prevent Node compilation errors
-const EarthGlobe = dynamic(() => import("@/components/landing/EarthGlobe"), {
+// Dynamically import photorealistic 2D Globe component with SSR disabled
+const Globe = dynamic(() => import("@/components/storytelling/Globe").then((mod) => mod.Globe), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full flex items-center justify-center text-emerald-500 font-semibold text-sm animate-pulse">
@@ -30,6 +30,13 @@ export default function LandingPage() {
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setScrollProgress(latest)
   })
+
+  // Map scroll progress to storytelling stages
+  const stage = 
+    scrollProgress < 0.25 ? "polluted" :
+    scrollProgress < 0.50 ? "awareness" :
+    scrollProgress < 0.75 ? "recovery" :
+    "thriving";
 
   // Stagger animation configs
   const containerVariants = {
@@ -54,9 +61,15 @@ export default function LandingPage() {
     <div ref={containerRef} className="relative w-full flex flex-col bg-sand-50 dark:bg-forest-950 text-foreground transition-colors duration-300">
       
       {/* 3D STICKY CANVAS CONTAINER (Occupies 35-45% width on desktop, fixed on right) */}
-      <div className="fixed right-4 lg:right-12 top-[12vh] w-full lg:w-[42%] h-[60vh] lg:h-[75vh] pointer-events-none z-10 flex items-center justify-center select-none opacity-40 lg:opacity-100">
-        <EarthGlobe progress={scrollProgress} />
-      </div>
+      <motion.div 
+        style={{
+          scale: 1 - scrollProgress * 0.35,
+          opacity: scrollProgress > 0.85 ? Math.max(0, 1 - (scrollProgress - 0.85) * 6.6) : 1
+        }}
+        className="fixed right-4 lg:right-12 top-[12vh] w-full lg:w-[42%] h-[60vh] lg:h-[75vh] pointer-events-none z-10 flex items-center justify-center select-none lg:opacity-100"
+      >
+        <Globe stage={stage} progress={scrollProgress} />
+      </motion.div>
 
       {/* SCENE 1: THE WORLD TODAY (Hero Section) */}
       <section className="min-h-[85vh] flex flex-col justify-center items-start py-12 relative overflow-hidden lg:w-[55%] z-20">

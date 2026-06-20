@@ -1,29 +1,52 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
+import dynamic from "next/dynamic"
+import { motion } from "framer-motion"
 import { useAppContext } from "@/store/AppContext"
-import { Sprout, Sun, Wind, Cloud, Eye, RefreshCw } from "lucide-react"
+import { Sprout, Sun, Wind, Cloud, CloudRain, Leaf, Flower2, Snowflake, Calendar, Eye, RefreshCw } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+const Garden3D = dynamic(() => import("@/components/garden/Garden3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-forest-950">
+      <div className="flex flex-col items-center gap-3 animate-pulse">
+        <span className="text-4xl">🌱</span>
+        <p className="text-[10px] font-bold text-emerald-500/60 uppercase tracking-widest">Growing Garden…</p>
+      </div>
+    </div>
+  ),
+})
 
 export default function CarbonGarden() {
   const router = useRouter()
   const { isOnboarded, gardenLevel, points, co2SavedKg } = useAppContext()
+  const [mounted, setMounted] = useState(false)
   const [previewLevel, setPreviewLevel] = useState<number | null>(null)
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+  
+  // Simulation states
+  const [weather, setWeather] = useState<"sunny" | "windy" | "rainy">("sunny")
+  const [season, setSeason] = useState<"spring" | "summer" | "autumn" | "winter">("summer")
+
+  useEffect(() => {
     if (!isOnboarded) {
-      router.push("/onboarding")
+      router.replace("/onboarding")
     }
   }, [isOnboarded, router])
-
-  if (!isOnboarded) return null
 
   // Active level to display (allows clicking preview buttons to override user's level)
   const activeLevel = previewLevel !== null ? previewLevel : gardenLevel
 
   const getGardenDetails = (lvl: number) => {
     switch (lvl) {
+      case 99:
+        return { name: "Asset Isolation Lab", desc: "Inspect stylized tree, flower cluster, and rock models in isolation." }
       case 0:
         return { name: "Empty Land", desc: "A bare soil plot. Complete actions to plant seeds." }
       case 1:
@@ -41,293 +64,236 @@ export default function CarbonGarden() {
 
   const currentDetails = getGardenDetails(activeLevel)
 
+  // Dynamic canvas background gradient
+  const getCanvasBackground = (se: "spring" | "summer" | "autumn" | "winter") => {
+    switch (se) {
+      case "spring":
+        return "bg-gradient-to-b from-pink-300/10 via-emerald-400/5 to-transparent dark:from-pink-950/20 dark:via-emerald-950/10 dark:to-transparent"
+      case "autumn":
+        return "bg-gradient-to-b from-orange-400/10 via-amber-600/5 to-transparent dark:from-orange-950/20 dark:via-amber-950/10 dark:to-transparent"
+      case "winter":
+        return "bg-gradient-to-b from-blue-300/10 via-slate-400/5 to-transparent dark:from-slate-900 dark:via-slate-800/50 dark:to-transparent"
+      case "summer":
+      default:
+        return "bg-gradient-to-b from-sky-400/10 via-emerald-500/5 to-transparent dark:from-forest-950 dark:via-forest-900/30"
+    }
+  }
+
+  const canvasBg = getCanvasBackground(season)
+
+  // Empty State if not onboarded or not mounted yet
+  if (!mounted || !isOnboarded) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-[70vh] bg-forest-950">
+        <div className="flex flex-col items-center gap-3 animate-pulse text-emerald-500 font-bold uppercase text-xs tracking-wider">
+          <Sprout className="h-8 w-8 animate-spin" />
+          Loading...
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex-1 space-y-8 py-6 max-w-4xl mx-auto w-full relative">
-      {/* HEADER SECTION */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-xs">
+    <div className="relative w-full h-[calc(100vh-4rem)] mt-16 overflow-hidden bg-forest-950">
+      <style>
+        {`
+          @keyframes raindrop {
+            0% { transform: translateY(-20px) translateX(0) rotate(15deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(450px) translateX(-90px) rotate(15deg); opacity: 0; }
+          }
+          @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          .animate-spin-slow {
+            animation: spin-slow 80s linear infinite;
+          }
+        `}
+      </style>
+
+      {/* 3D Canvas Background */}
+      <div className={cn("absolute inset-0 z-0", canvasBg)}>
+        <Garden3D level={activeLevel} weather={weather} season={season} />
+      </div>
+
+      {/* HUD OVERLAYS */}
+
+      {/* 1. Top-Left: Logo/Badge Card */}
+      <div className="absolute top-4 left-4 z-10 pointer-events-none">
+        <div className="glass-panel-dark rounded-xl p-2.5 px-3.5 border border-emerald-500/10 shadow-lg pointer-events-auto flex items-center gap-2">
+          <div className="h-6 w-6 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
             <Sprout className="h-3.5 w-3.5" />
-            CARBON GARDEN
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight">Your Carbon Garden</h1>
-          <p className="text-sm text-sand-800 dark:text-sand-300 font-medium max-w-md leading-relaxed">
-            Every green point you earn transforms this digital landscape. Watch your micro-impact materialize.
-          </p>
-        </div>
-
-        {/* STATS BUBBLES */}
-        <div className="flex gap-4">
-          <div className="px-5 py-3 rounded-2xl glass-panel-light dark:glass-panel-dark border border-emerald-500/10 text-center shadow-md">
-            <span className="block text-[9px] font-bold opacity-60 uppercase">Points</span>
-            <span className="text-lg font-black text-emerald-500">{points}</span>
-          </div>
-          <div className="px-5 py-3 rounded-2xl glass-panel-light dark:glass-panel-dark border border-emerald-500/10 text-center shadow-md">
-            <span className="block text-[9px] font-bold opacity-60 uppercase">CO2 Offset</span>
-            <span className="text-lg font-black text-emerald-500">{co2SavedKg} kg</span>
+          <div>
+            <h1 className="text-xs font-black text-white leading-none">Carbon Garden</h1>
+            <span className="text-[8px] text-emerald-400 font-extrabold tracking-wider">ECO SYSTEM</span>
           </div>
         </div>
       </div>
 
-      {/* GARDEN INTERACTIVE CANVAS */}
-      <div className="relative w-full aspect-[4/3] max-w-2xl mx-auto rounded-3xl glass-panel-light dark:glass-panel-dark border border-emerald-500/10 shadow-2xl overflow-hidden flex items-center justify-center bg-gradient-to-b from-sky-400/10 via-emerald-500/5 to-transparent dark:from-forest-950 dark:via-forest-900/30">
-        
-        {/* Environment Layer: Sun rays / Light beams */}
-        {activeLevel >= 5 && (
-          <div className="absolute inset-0 bg-radial-[circle_at_20%_-20%] from-yellow-300/15 via-transparent to-transparent pointer-events-none z-10 animate-pulse-slow" />
-        )}
-
-        {/* Environment Layer: Floating Clouds */}
-        {activeLevel >= 1 && (
-          <>
-            <motion.div
-              animate={{ x: [-80, 500] }}
-              transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-              className="absolute top-10 left-0 text-white opacity-25 pointer-events-none"
-            >
-              <Cloud className="h-10 w-16 fill-current" />
-            </motion.div>
-            <motion.div
-              animate={{ x: [500, -80] }}
-              transition={{ repeat: Infinity, duration: 35, ease: "linear" }}
-              className="absolute top-24 right-0 text-white opacity-15 pointer-events-none"
-            >
-              <Cloud className="h-8 w-12 fill-current" />
-            </motion.div>
-          </>
-        )}
-
-        {/* Environment Layer: Floating Leaves */}
-        {activeLevel >= 3 && (
-          <div className="absolute inset-0 pointer-events-none z-10">
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ y: -50, x: Math.random() * 400 + 50, opacity: 0, rotate: 0 }}
-                animate={{
-                  y: [null, 400],
-                  x: [null, Math.random() * 200 + 50],
-                  opacity: [0, 0.7, 0.7, 0],
-                  rotate: [0, 360],
-                }}
-                transition={{
-                  duration: 8 + i * 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: i * 1.5,
-                }}
-                className="absolute text-emerald-500/40 text-sm"
-              >
-                🍃
-              </motion.div>
-            ))}
-          </div>
-        )}
-
-        {/* Environment Layer: Fluttering Butterflies & Flying Birds */}
-        {activeLevel >= 5 && (
-          <div className="absolute inset-0 pointer-events-none z-10">
-            {/* Butterfly */}
-            <motion.div
-              animate={{
-                x: [100, 180, 140, 100],
-                y: [200, 160, 220, 200],
-                rotate: [0, 15, -15, 0],
-              }}
-              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-              className="absolute text-xl"
-            >
-              🦋
-            </motion.div>
-            {/* Birds */}
-            <motion.div
-              animate={{
-                x: [-50, 600],
-                y: [80, 120],
-              }}
-              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              className="absolute text-xs font-bold text-emerald-600/30 opacity-70"
-            >
-              🦅
-            </motion.div>
-          </div>
-        )}
-
-        {/* 3D Isometric / Orthographic Island Visualizer */}
-        <div className="relative w-64 h-64 md:w-80 md:h-80 flex flex-col justify-end items-center">
-          
-          {/* ISOMETRIC BASE ISLAND (SVG) */}
-          <svg viewBox="0 0 200 120" className="w-full h-auto drop-shadow-2xl">
-            {/* Under-island soil block */}
-            <path
-              d="M 10 60 L 100 105 L 190 60 L 100 15 Z"
-              fill={activeLevel > 0 ? "#1e3b2e" : "#3b302c"}
-              stroke={activeLevel > 0 ? "#11261d" : "#231d1b"}
-              strokeWidth="2"
-            />
-            {/* Soil Side face */}
-            <path
-              d="M 10 60 L 100 105 L 100 120 L 10 75 Z"
-              fill={activeLevel > 0 ? "#10231b" : "#2a221f"}
-            />
-            <path
-              d="M 190 60 L 100 105 L 100 120 L 190 75 Z"
-              fill={activeLevel > 0 ? "#0d1b15" : "#1e1816"}
-            />
-            {/* Island Grass Cover */}
-            <path
-              d="M 10 58 L 100 103 L 190 58 L 100 13 Z"
-              fill={activeLevel > 0 ? "#10b981" : "#5c4f4a"}
-            />
-          </svg>
-
-          {/* VEGETATION & LIFE OVERLAYS */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <AnimatePresence mode="popLayout">
-              
-              {/* Level 0: Cracks and stones */}
-              {activeLevel === 0 && (
-                <motion.div
-                  key="lvl0"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="absolute bottom-16 text-3xl"
-                >
-                  🪨
-                </motion.div>
-              )}
-
-              {/* Level 1: Wildflowers */}
-              {activeLevel === 1 && (
-                <motion.div
-                  key="lvl1"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="absolute bottom-16 flex gap-4 text-xl"
-                >
-                  <span>🪻</span>
-                  <span>🌼</span>
-                  <span>🌱</span>
-                </motion.div>
-              )}
-
-              {/* Level 2: Sprout */}
-              {activeLevel === 2 && (
-                <motion.div
-                  key="lvl2"
-                  initial={{ opacity: 0, y: 10, scale: 0 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 150 }}
-                  className="absolute bottom-16 text-4xl"
-                >
-                  🪴
-                </motion.div>
-              )}
-
-              {/* Level 3: Large Tree */}
-              {activeLevel === 3 && (
-                <motion.div
-                  key="lvl3"
-                  initial={{ opacity: 0, y: 30, scale: 0 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 120 }}
-                  className="absolute bottom-16 text-7xl flex flex-col items-center"
-                >
-                  <motion.span
-                    animate={{ rotate: [-1, 1, -1] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="origin-bottom"
-                  >
-                    🌳
-                  </motion.span>
-                </motion.div>
-              )}
-
-              {/* Level 4: Forest */}
-              {activeLevel === 4 && (
-                <motion.div
-                  key="lvl4"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="absolute bottom-16 flex items-end gap-1"
-                >
-                  <span className="text-5xl opacity-80">🌲</span>
-                  <span className="text-7xl">🌳</span>
-                  <span className="text-5xl opacity-80">🌲</span>
-                </motion.div>
-              )}
-
-              {/* Level 5: Complete Sanctuary */}
-              {activeLevel >= 5 && (
-                <motion.div
-                  key="lvl5"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="absolute bottom-14 flex flex-col items-center"
-                >
-                  <div className="flex items-end gap-1 relative">
-                    <span className="text-5xl opacity-90 animate-bounce">🌸</span>
-                    <span className="text-8xl">🌳</span>
-                    <span className="text-6xl opacity-90">🌲</span>
-                    {/* Glowing sparks */}
-                    <span className="absolute -top-6 left-6 text-xl animate-pulse">✨</span>
-                  </div>
-                </motion.div>
-              )}
-
-            </AnimatePresence>
-          </div>
+      {/* 2. Top-Right: Stats Boxes */}
+      <div className="absolute top-4 right-4 z-10 pointer-events-none flex gap-2">
+        <div className="px-3.5 py-1.5 rounded-xl glass-panel-dark border border-emerald-500/10 text-center shadow-md pointer-events-auto min-w-[65px]">
+          <span className="block text-[8px] font-bold opacity-60 uppercase text-sand-400">Points</span>
+          <span className="text-xs font-black text-emerald-400">{points}</span>
+        </div>
+        <div className="px-3.5 py-1.5 rounded-xl glass-panel-dark border border-emerald-500/10 text-center shadow-md pointer-events-auto min-w-[80px]">
+          <span className="block text-[8px] font-bold opacity-60 uppercase text-sand-400">CO2 Offset</span>
+          <span className="text-xs font-black text-emerald-400">{co2SavedKg} kg</span>
         </div>
       </div>
 
-      {/* FOOTER CONTROLS / DETAILS CARD */}
-      <div className="glass-panel-light dark:glass-panel-dark rounded-3xl p-6 border border-emerald-500/10 shadow-lg flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="text-center md:text-left space-y-1">
-          <h3 className="font-extrabold text-lg text-emerald-600 dark:text-emerald-400">
-            {currentDetails.name} (Level {activeLevel})
-          </h3>
-          <p className="text-xs text-sand-800 dark:text-sand-300 font-semibold leading-relaxed max-w-sm">
-            {currentDetails.desc}
-          </p>
-        </div>
-
-        {/* DEMO LEVEL TOGGLE (Allows checking other stages!) */}
-        <div className="flex flex-col items-center md:items-end gap-2">
-          <div className="flex items-center gap-1.5 text-[9px] uppercase font-extrabold text-sand-800 dark:text-sand-400">
-            <Eye className="h-3 w-3" /> DEMO SCREEN CONTROLS
+      {/* 3. Below Stats: Demo Screen Controls */}
+      <div className="absolute top-18 right-4 z-10 pointer-events-none">
+        <div className="glass-panel-dark rounded-xl p-2 border border-emerald-500/10 shadow-lg pointer-events-auto flex items-center gap-2">
+          <div className="flex items-center gap-1 text-[8px] font-extrabold text-sand-400 pl-1">
+            <Eye className="h-2.5 w-2.5 text-emerald-400" />
+            <span className="hidden sm:inline">PREVIEW</span>
           </div>
-          <div className="flex flex-wrap justify-center gap-1.5 bg-sand-100 dark:bg-forest-950 p-1 rounded-xl border border-sand-200 dark:border-forest-800">
-            {[0, 1, 2, 3, 4, 5].map((lvl) => (
-              <button
-                key={lvl}
-                onClick={() => setPreviewLevel(lvl === gardenLevel ? null : lvl)}
-                className={`h-7 w-7 rounded-lg text-xs font-bold transition-all flex items-center justify-center ${
-                  (lvl === gardenLevel && previewLevel === null) || previewLevel === lvl
-                    ? "bg-emerald-600 text-white shadow-sm"
-                    : "text-sand-800 dark:text-sand-200 hover:bg-sand-200/50 dark:hover:bg-forest-900/40"
-                }`}
-              >
-                {lvl}
-              </button>
-            ))}
+          <div className="flex items-center gap-1 bg-forest-950/60 p-0.5 rounded-lg border border-forest-800">
+            {[0, 1, 2, 3, 4, 5].map((lvl) => {
+              const isActive = (lvl === gardenLevel && previewLevel === null) || previewLevel === lvl
+              return (
+                <motion.button
+                  key={lvl}
+                  onClick={() => setPreviewLevel(lvl === gardenLevel ? null : lvl)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-pressed={isActive}
+                  aria-label={`Preview Level ${lvl}`}
+                  className={`h-5.5 w-5.5 rounded text-[9px] font-black transition-all flex items-center justify-center cursor-pointer focus-visible:ring-1 focus-visible:ring-emerald-500 outline-none ${
+                    isActive
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "text-sand-200 hover:bg-forest-900/40"
+                  }`}
+                >
+                  {lvl}
+                </motion.button>
+              )
+            })}
+            <motion.button
+              onClick={() => setPreviewLevel(previewLevel === 99 ? null : 99)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-pressed={previewLevel === 99}
+              aria-label="Preview Asset Lab"
+              className={`h-5.5 px-2 rounded text-[9px] font-black transition-all flex items-center justify-center cursor-pointer focus-visible:ring-1 focus-visible:ring-emerald-500 outline-none ${
+                previewLevel === 99
+                  ? "bg-purple-600 text-white shadow-sm"
+                  : "text-purple-400 hover:bg-forest-900/40 border border-purple-500/20"
+              }`}
+            >
+              🧪 Lab
+            </motion.button>
             {previewLevel !== null && (
-              <button
+              <motion.button
                 onClick={() => setPreviewLevel(null)}
                 title="Reset to your level"
-                className="h-7 px-2 text-[10px] font-bold text-emerald-500 flex items-center gap-1 border-l border-sand-300/50 dark:border-forest-800 hover:underline"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="h-5.5 px-1.5 text-[8px] font-extrabold text-emerald-500 flex items-center gap-0.5 border-l border-forest-800 hover:underline cursor-pointer focus-visible:ring-1 focus-visible:ring-emerald-500 outline-none"
               >
-                <RefreshCw className="h-2.5 w-2.5" /> reset
-              </button>
+                <RefreshCw className="h-2 w-2" /> reset
+              </motion.button>
             )}
           </div>
         </div>
       </div>
+
+      {/* 4. Bottom-Center: Unified Weather + Season + Level HUD */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none w-[92%] max-w-2xl">
+        <div className="glass-panel-dark rounded-3xl p-4 border border-emerald-500/10 shadow-2xl pointer-events-auto space-y-3 bg-forest-950/80 backdrop-blur-md">
+          
+          {/* Header Row: Level Information */}
+          <div className="flex items-center justify-between border-b border-white/5 pb-2 text-[10px]">
+            <div className="flex items-center gap-1.5 text-emerald-400 font-black">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Level {activeLevel}: {currentDetails.name}</span>
+            </div>
+            <span className="text-sand-400 font-bold hidden sm:inline text-[9px]">{currentDetails.desc}</span>
+          </div>
+
+          {/* Controls Row */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
+            {/* Weather controls */}
+            <div className="space-y-1">
+              <span className="text-[8px] font-black tracking-wider uppercase text-emerald-400 flex items-center gap-1">
+                <Cloud className="h-3 w-3" /> WEATHER
+              </span>
+              <div className="flex gap-1">
+                {[
+                  { id: "sunny", label: "Sunny", icon: Sun, color: "text-amber-500 bg-amber-500/10 border-amber-500/30" },
+                  { id: "windy", label: "Windy", icon: Wind, color: "text-teal-500 bg-teal-500/10 border-teal-500/30" },
+                  { id: "rainy", label: "Rainy", icon: CloudRain, color: "text-blue-500 bg-blue-500/10 border-blue-500/30" },
+                ].map((w) => {
+                  const Icon = w.icon
+                  const isActive = weather === w.id
+                  return (
+                    <motion.button
+                      key={w.id}
+                      onClick={() => setWeather(w.id as "sunny" | "windy" | "rainy")}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      aria-pressed={isActive}
+                      aria-label={`Simulate ${w.label} weather`}
+                      className={`py-1 px-2.5 rounded-lg border flex items-center gap-1 transition-all font-bold text-[9px] cursor-pointer focus-visible:ring-1 focus-visible:ring-emerald-500 outline-none ${
+                        isActive
+                          ? `${w.color} ring-1 ring-offset-1 ring-offset-emerald-950 ring-emerald-500 scale-102`
+                          : "bg-white/5 border-white/10 text-sand-300 hover:bg-white/10 hover:text-white"
+                      }`}
+                    >
+                      <Icon className="h-3 w-3" />
+                      {w.label}
+                    </motion.button>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
+
+            {/* Season controls */}
+            <div className="space-y-1">
+              <span className="text-[8px] font-black tracking-wider uppercase text-emerald-400 flex items-center gap-1">
+                <Calendar className="h-3 w-3" /> SEASON
+              </span>
+              <div className="flex gap-1">
+                {[
+                  { id: "spring", label: "Spring", icon: Flower2, color: "text-pink-500 bg-pink-500/10 border-pink-500/30" },
+                  { id: "summer", label: "Summer", icon: Leaf, color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/30" },
+                  { id: "autumn", label: "Autumn", icon: Leaf, color: "text-amber-500 bg-amber-500/10 border-amber-500/30" },
+                  { id: "winter", label: "Winter", icon: Snowflake, color: "text-blue-400 bg-blue-400/10 border-blue-400/30" },
+                ].map((s) => {
+                  const Icon = s.icon
+                  const isActive = season === s.id
+                  return (
+                    <motion.button
+                      key={s.id}
+                      onClick={() => setSeason(s.id as "spring" | "summer" | "autumn" | "winter")}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      aria-pressed={isActive}
+                      aria-label={`Simulate ${s.label} season`}
+                      className={`py-1 px-2 rounded-lg border flex items-center gap-1 transition-all font-bold text-[9px] cursor-pointer focus-visible:ring-1 focus-visible:ring-emerald-500 outline-none ${
+                        isActive
+                          ? `${s.color} ring-1 ring-offset-1 ring-offset-emerald-950 ring-emerald-500 scale-102`
+                          : "bg-white/5 border-white/10 text-sand-300 hover:bg-white/10 hover:text-white"
+                      }`}
+                    >
+                      <Icon className="h-3 w-3" />
+                      {s.label}
+                    </motion.button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   )
 }
