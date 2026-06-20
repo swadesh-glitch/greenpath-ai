@@ -489,7 +489,7 @@ export default function Onboarding() {
                           disabled={!textInput.trim() || isOptionTransitioning}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          className="px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl flex items-center justify-center font-bold text-xs shadow-md shadow-emerald-500/10 transition-all disabled:opacity-40 cursor-pointer h-[46px] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                          className="px-5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl flex items-center justify-center font-bold text-xs shadow-md shadow-emerald-700/10 transition-all disabled:opacity-40 cursor-pointer h-[46px] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                         >
                           Continue
                           <ArrowRight className="h-4 w-4 ml-1.5" />
@@ -656,7 +656,7 @@ export default function Onboarding() {
                     }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-md shadow-emerald-500/10 cursor-pointer"
+                    className="px-5 py-3 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-md shadow-emerald-700/10 cursor-pointer"
                   >
                     Try Again
                   </motion.button>
@@ -884,7 +884,7 @@ export default function Onboarding() {
                                     onClick={() => setRevealSubStep(2)}
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="btn-premium px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/20 max-w-xs w-full cursor-pointer flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                                    className="btn-premium px-8 py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-700/20 max-w-xs w-full cursor-pointer flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                                   >
                                     Discover Your Carbon Story
                                     <ArrowRight className="h-4 w-4" />
@@ -928,7 +928,7 @@ export default function Onboarding() {
                         onClick={() => setRevealSubStep(3)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="btn-premium px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/20 max-w-xs w-full cursor-pointer flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                        className="btn-premium px-8 py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-700/20 max-w-xs w-full cursor-pointer flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                       >
                         Visualize Your Future Twin
                         <ArrowRight className="h-4 w-4" />
@@ -983,7 +983,7 @@ export default function Onboarding() {
                         onClick={() => setRevealSubStep(4)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="btn-premium px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/20 max-w-xs w-full cursor-pointer flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                        className="btn-premium px-8 py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-700/20 max-w-xs w-full cursor-pointer flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                       >
                         Review Climate Action Plan
                         <ArrowRight className="h-4 w-4" />
@@ -1047,7 +1047,7 @@ export default function Onboarding() {
                         onClick={handleRevealConfirm}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="btn-premium px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-sm uppercase tracking-wider shadow-lg shadow-emerald-500/20 max-w-xs w-full cursor-pointer flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                        className="btn-premium px-8 py-4 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-black text-sm uppercase tracking-wider shadow-lg shadow-emerald-700/20 max-w-xs w-full cursor-pointer flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                       >
                         Enter My Carbon Garden
                         <ArrowRight className="h-4.5 w-4.5" />

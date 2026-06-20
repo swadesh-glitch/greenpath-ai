@@ -1,0 +1,508 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ClimateIdentityDashboard Snapshot Test > renders correctly and matches snapshot when user is onboarded 1`] = `
+<div
+  class="relative min-h-[calc(100vh-4rem)] lg:h-[calc(100vh-4rem)] w-full overflow-hidden flex flex-col items-center justify-center"
+>
+  <style>
+    
+          @keyframes blob1-move {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(60px, -40px) scale(1.12); }
+            66% { transform: translate(-40px, 50px) scale(0.9); }
+          }
+          @keyframes blob2-move {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-70px, 45px) scale(1.15); }
+          }
+          @keyframes blob3-move {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            40% { transform: translate(50px, -60px) scale(0.95); }
+          }
+          @keyframes float-mote {
+            0% { transform: translateY(110vh) translateX(0) scale(1); opacity: 0; }
+            10% { opacity: 0.35; }
+            90% { opacity: 0.35; }
+            100% { transform: translateY(-10vh) translateX(40px) scale(0.7); opacity: 0; }
+          }
+          @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.45; }
+            50% { transform: scale(1.15); opacity: 0.8; }
+          }
+          @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          .animate-blob1 {
+            animation: blob1-move 20s ease-in-out infinite alternate;
+          }
+          .animate-blob2 {
+            animation: blob2-move 26s ease-in-out infinite alternate;
+          }
+          .animate-blob3 {
+            animation: blob3-move 23s ease-in-out infinite alternate;
+          }
+          .animate-spin-slow {
+            animation: spin-slow 35s linear infinite;
+          }
+          .animate-pulse-glow {
+            animation: pulse-glow 3.5s ease-in-out infinite;
+          }
+          @keyframes shimmer-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          .animate-shimmer-text {
+            background-size: 200% auto;
+            animation: shimmer-gradient 8s linear infinite;
+          }
+          @keyframes orbit-dot-1 {
+            0% { transform: rotate(0deg) translateX(54px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(54px) rotate(-360deg); }
+          }
+          @keyframes orbit-dot-2 {
+            0% { transform: rotate(120deg) translateX(54px) rotate(-120deg); }
+            100% { transform: rotate(480deg) translateX(54px) rotate(-480deg); }
+          }
+          @keyframes orbit-dot-3 {
+            0% { transform: rotate(240deg) translateX(54px) rotate(-240deg); }
+            100% { transform: rotate(600deg) translateX(54px) rotate(-600deg); }
+          }
+          .orbit-particle-1 {
+            animation: orbit-dot-1 6s linear infinite;
+          }
+          .orbit-particle-2 {
+            animation: orbit-dot-2 7s linear infinite;
+          }
+          .orbit-particle-3 {
+            animation: orbit-dot-3 5.5s linear infinite;
+          }
+          @keyframes wind-sway {
+            0%, 100% { transform: scale(1.03) translate(0, 0) rotate(0deg); }
+            50% { transform: scale(1.05) translate(3px, -2px) rotate(0.08deg); }
+          }
+          @keyframes wind-drift {
+            0% { transform: translate(-20px, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.65; }
+            90% { opacity: 0.65; }
+            100% { transform: translate(105vw, -60px) rotate(180deg); opacity: 0; }
+          }
+          @keyframes petal-flutter {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(12px) rotate(45deg); }
+          }
+          @keyframes sway-grass {
+            0%, 100% { transform: rotate(0deg) skewX(0deg); }
+            50% { transform: rotate(7deg) skewX(3deg); }
+          }
+          @keyframes sway-flower {
+            0%, 100% { transform: rotate(0deg) translate(0, 0); }
+            50% { transform: rotate(-6deg) translate(-3px, 1px); }
+          }
+          .animate-sway-grass {
+            animation: sway-grass 4.8s ease-in-out infinite alternate;
+            transform-origin: bottom center;
+          }
+          .animate-sway-flower {
+            animation: sway-flower 6.2s ease-in-out infinite alternate;
+            transform-origin: bottom center;
+          }
+          .animate-wind {
+            animation: wind-sway 25s ease-in-out infinite;
+          }
+          .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+          }
+        
+  </style>
+  <div
+    data-testid="page-background"
+  />
+  <div
+    class="absolute inset-0 overflow-hidden pointer-events-none z-10"
+  >
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 4.562789697512926px; height: 4.562789697512926px; top: 41.25579395025852%; left: -20px; filter: blur(0.4px); animation: wind-drift 15.906974243782315s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 6.251158790051704s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 3.418723334048991px; height: 3.418723334048991px; top: 18.374466680979822%; left: -20px; filter: blur(0.4px); animation: wind-drift 13.046808335122478s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 1.6748933361959644s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 5.625011776330211px; height: 5.625011776330211px; top: 62.50023552660423%; left: -20px; filter: blur(0.4px); animation: wind-drift 18.56252944082553s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 10.500047105320846s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 5.438853136605758px; height: 5.438853136605758px; top: 58.777062732115155%; left: -20px; filter: blur(0.4px); animation: wind-drift 18.097132841514394s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 9.755412546423031s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 4.293621347947919px; height: 4.293621347947919px; top: 35.872426958958386%; left: -20px; filter: blur(0.4px); animation: wind-drift 15.234053369869798s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 5.174485391791677s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 4.037671595856864px; height: 4.037671595856864px; top: 30.753431917137277%; left: -20px; filter: blur(0.4px); animation: wind-drift 14.59417898964216s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 4.150686383427455s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 3.6233725989368395px; height: 3.6233725989368395px; top: 22.46745197873679%; left: -20px; filter: blur(0.4px); animation: wind-drift 13.558431497342099s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 2.493490395747358s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 5.171613885402621px; height: 5.171613885402621px; top: 53.432277708052425%; left: -20px; filter: blur(0.4px); animation: wind-drift 17.429034713506553s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 8.686455541610485s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 4.024708797709991px; height: 4.024708797709991px; top: 30.494175954199818%; left: -20px; filter: blur(0.4px); animation: wind-drift 14.561771994274977s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 4.098835190839964s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 5.874983119043463px; height: 5.874983119043463px; top: 67.49966238086927%; left: -20px; filter: blur(0.4px); animation: wind-drift 19.18745779760866s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 11.499932476173854s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 4.1178418088456965px; height: 4.1178418088456965px; top: 32.35683617691393%; left: -20px; filter: blur(0.4px); animation: wind-drift 14.794604522114241s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 4.471367235382786s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 6.364258088395218px; height: 6.364258088395218px; top: 77.28516176790436%; left: -20px; filter: blur(0.4px); animation: wind-drift 20.410645220988044s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 13.457032353580871s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 3.0397938127061934px; height: 3.0397938127061934px; top: 10.795876254123868%; left: -20px; filter: blur(0.4px); animation: wind-drift 12.099484531765484s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 0.15917525082477368s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 6.587849982381158px; height: 6.587849982381158px; top: 81.75699964762316%; left: -20px; filter: blur(0.4px); animation: wind-drift 20.969624955952895s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 14.351399929524632s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 3.3070599705315544px; height: 3.3070599705315544px; top: 16.14119941063109%; left: -20px; filter: blur(0.4px); animation: wind-drift 12.767649926328886s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 1.2282398821262177s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 4.558766753900272px; height: 4.558766753900272px; top: 41.175335078005446%; left: -20px; filter: blur(0.4px); animation: wind-drift 15.89691688475068s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 6.235067015601089s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 6.455241487106832px; height: 6.455241487106832px; top: 79.10482974213664%; left: -20px; filter: blur(0.4px); animation: wind-drift 20.63810371776708s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 13.820965948427329s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 4.533972791406995px; height: 4.533972791406995px; top: 40.67945582813991%; left: -20px; filter: blur(0.4px); animation: wind-drift 15.834931978517488s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 6.1358911656279815s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 6.322574700039695px; height: 6.322574700039695px; top: 76.4514940007939%; left: -20px; filter: blur(0.4px); animation: wind-drift 20.306436750099238s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 13.29029880015878s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+    <div
+      class="absolute rounded-full bg-white/75"
+      style="width: 5.709458377408737px; height: 5.709458377408737px; top: 64.18916754817474%; left: -20px; filter: blur(0.4px); animation: wind-drift 18.773645943521842s linear infinite, petal-flutter 3.5s ease-in-out infinite; animation-delay: 10.837833509634947s; box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);"
+    />
+  </div>
+  <div
+    class="relative z-10 flex-1 space-y-5 pt-20 pb-6 px-4 max-w-2xl mx-auto w-full flex flex-col items-center justify-center"
+  >
+    <div
+      class="space-y-1.5 text-center filter drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]"
+    >
+      <h1
+        class="text-2xl sm:text-3xl font-black tracking-tight text-white"
+        style="text-shadow: 0 2px 12px rgba(0,0,0,0.6), 0 1px 2px rgba(0,0,0,0.8);"
+      >
+        Your Climate Identity
+      </h1>
+      <p
+        class="text-xs font-bold text-zinc-100 opacity-95 flex items-center justify-center gap-1.5"
+        style="text-shadow: 0 2px 12px rgba(0,0,0,0.6), 0 1px 2px rgba(0,0,0,0.8);"
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-calendar h-3.5 w-3.5 text-emerald-400/80"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8 2v4"
+          />
+          <path
+            d="M16 2v4"
+          />
+          <rect
+            height="18"
+            rx="2"
+            width="18"
+            x="3"
+            y="4"
+          />
+          <path
+            d="M3 10h18"
+          />
+        </svg>
+         Customized sustainability footprint identity
+      </p>
+    </div>
+    <div
+      class="w-full max-w-md rounded-3xl p-6 text-center space-y-4 shadow-2xl relative overflow-hidden transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.65),0_0_50px_rgba(52,211,153,0.05)] glass-panel"
+    >
+      <div
+        class="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent"
+      />
+      <div
+        class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none"
+      />
+      <div
+        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-extrabold text-[8px] tracking-widest uppercase border border-emerald-500/20"
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-sparkles h-3.5 w-3.5 fill-current animate-pulse text-emerald-400"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"
+          />
+          <path
+            d="M20 2v4"
+          />
+          <path
+            d="M22 4h-4"
+          />
+          <circle
+            cx="4"
+            cy="20"
+            r="2"
+          />
+        </svg>
+        Active Climate Identity
+      </div>
+      <div
+        class="relative mx-auto h-24 w-24 flex items-center justify-center mt-1"
+      >
+        <div
+          class="absolute inset-[-8px] rounded-full bg-gradient-to-tr from-emerald-500/25 via-teal-500/15 to-amber-500/25 blur-md animate-spin-slow"
+        />
+        <div
+          class="absolute inset-[-4px] rounded-full border border-emerald-500/20 animate-pulse-glow"
+        />
+        <div
+          class="absolute h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] orbit-particle-1 z-20"
+        />
+        <div
+          class="absolute h-1 w-1 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24] orbit-particle-2 z-20"
+        />
+        <div
+          class="absolute h-1.5 w-1.5 rounded-full bg-teal-400 shadow-[0_0_8px_#2dd4bf] orbit-particle-3 z-20"
+        />
+        <div
+          class="h-20 w-20 rounded-2xl flex items-center justify-center shadow-md z-10"
+          style="backdrop-filter: blur(12px); background-color: rgba(10, 20, 15, 0.75); border: 1px solid rgba(255, 255, 255, 0.15);"
+        >
+          <svg
+            aria-hidden="true"
+            class="lucide lucide-bike h-8 w-8 text-emerald-700 filter drop-shadow-[0_2px_4px_rgba(4,120,87,0.15)]"
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="18.5"
+              cy="17.5"
+              r="3.5"
+            />
+            <circle
+              cx="5.5"
+              cy="17.5"
+              r="3.5"
+            />
+            <circle
+              cx="15"
+              cy="5"
+              r="1"
+            />
+            <path
+              d="M12 17.5V14l-3-3 4-3 2 3h2"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="space-y-1 relative py-1"
+      >
+        <div
+          class="absolute inset-0 mx-auto w-[85%] h-12 bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-amber-500/15 blur-xl rounded-full animate-pulse-glow pointer-events-none -z-10"
+        />
+        <h2
+          class="font-black text-2xl sm:text-3xl bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] animate-shimmer-text"
+        >
+          Conscious Commuter
+        </h2>
+        <span
+          class="text-[8px] font-black text-emerald-400 tracking-widest uppercase block"
+        >
+          GreenPath Citizen
+        </span>
+      </div>
+      <p
+        class="text-xs text-zinc-200 leading-relaxed font-semibold"
+      >
+        A dedicated carbon neutral advocate optimizing urban footprints.
+      </p>
+      <div
+        class="h-[1px] bg-white/10"
+      />
+      <div
+        class="space-y-2.5 text-left"
+      >
+        <div
+          class="p-3 rounded-2xl border-l-[3px] border-l-emerald-500 flex flex-col gap-0.5 shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all hover:bg-white/[0.04] hover:border-l-emerald-400 glass-panel relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-emerald-500/15 to-transparent pointer-events-none"
+          />
+          <span
+            class="text-[9px] font-black text-emerald-400 uppercase tracking-widest flex items-center gap-1.5 z-10 relative"
+          >
+            <span
+              class="inline-block"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-sprout h-3 w-3 text-emerald-400"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"
+                />
+                <path
+                  d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"
+                />
+                <path
+                  d="M5 21h14"
+                />
+              </svg>
+            </span>
+            Biggest Strength
+            <div
+              class="h-3 w-3 rounded-full bg-emerald-400/10 border border-emerald-400/25 flex items-center justify-center text-[7px] text-emerald-400 font-black ml-auto"
+            >
+              ▲
+            </div>
+          </span>
+          <p
+            class="text-[11px] font-semibold leading-normal text-zinc-100 z-10 relative pl-4"
+          >
+            Consistently walk and bike
+          </p>
+        </div>
+        <div
+          class="p-3 rounded-2xl border-l-[3px] border-l-amber-500 flex flex-col gap-0.5 shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all hover:bg-white/[0.04] hover:border-l-amber-400 glass-panel relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-amber-500/15 to-transparent pointer-events-none"
+          />
+          <span
+            class="text-[9px] font-black text-amber-400 uppercase tracking-widest flex items-center gap-1.5 z-10 relative"
+          >
+            <span
+              class="inline-block"
+            >
+              <svg
+                aria-hidden="true"
+                class="lucide lucide-zap h-3 w-3 text-amber-400 fill-amber-400/20"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+                />
+              </svg>
+            </span>
+            Biggest Opportunity
+          </span>
+          <p
+            class="text-[11px] font-semibold leading-normal text-zinc-100 z-10 relative pl-4"
+          >
+            Carpool or take direct lines when possible
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="pt-3.5 border-t border-white/10 flex justify-center w-full max-w-md"
+    >
+      <button
+        aria-label="Restart Onboarding Demo"
+        class="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black text-red-400 bg-zinc-950 hover:bg-zinc-900 hover:text-red-300 border border-red-500/25 hover:border-red-500/40 transition-all cursor-pointer shadow-lg backdrop-blur-md"
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-refresh-cw h-3 w-3"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+          />
+          <path
+            d="M21 3v5h-5"
+          />
+          <path
+            d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+          />
+          <path
+            d="M8 16H3v5"
+          />
+        </svg>
+         Restart Onboarding Demo
+      </button>
+    </div>
+  </div>
+</div>
+`;

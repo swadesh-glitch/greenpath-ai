@@ -177,7 +177,7 @@ export const LockedScreenPreview: React.FC<LockedScreenPreviewProps> = ({ route 
           onClick={() => router.push("/onboarding")}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          className="btn-premium w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer"
+          className="btn-premium w-full py-4 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-700/20 flex items-center justify-center gap-2 cursor-pointer"
         >
           {config.cta}
           <ArrowRight className="h-4 w-4" />

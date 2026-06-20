@@ -115,7 +115,7 @@ export default function LandingPage() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="btn-premium px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black flex items-center gap-2 shadow-lg shadow-emerald-600/20"
+                className="btn-premium px-8 py-4 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-black flex items-center gap-2 shadow-lg shadow-emerald-700/20"
               >
                 Start My Climate Journey
                 <ArrowRight className="h-4 w-4" />
@@ -175,7 +175,7 @@ export default function LandingPage() {
                     <Icon className="h-5 w-5 text-emerald-500" />
                   </span>
                   <div>
-                    <h4 className="font-extrabold text-sm leading-tight text-foreground">{cat.name}</h4>
+                    <h3 className="font-extrabold text-sm leading-tight text-foreground">{cat.name}</h3>
                     <span className="text-[10px] opacity-60 font-semibold">{cat.val}</span>
                   </div>
                 </motion.div>
@@ -216,7 +216,7 @@ export default function LandingPage() {
               🌱
             </div>
             <div className="text-left space-y-1">
-              <h4 className="font-extrabold text-sm">Active Seed Sprouting</h4>
+              <h3 className="font-extrabold text-sm">Active Seed Sprouting</h3>
               <p className="text-xs opacity-60 leading-normal font-semibold">
                 Your profile registers as a fresh sprout. Every completed mission adds foliage and clears atmosphere.
               </p>
@@ -347,7 +347,7 @@ export default function LandingPage() {
                 ].map((m) => (
                   <div key={m.title} className="p-4 rounded-2xl glass-panel-light dark:glass-panel-dark border border-emerald-500/10 flex justify-between items-center text-left">
                     <div>
-                      <h4 className="font-bold text-sm">{m.title}</h4>
+                      <h3 className="font-bold text-sm">{m.title}</h3>
                       <p className="text-xs opacity-60 font-semibold">{m.desc}</p>
                     </div>
                     <span className="text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold px-3 py-1 rounded-full">
@@ -377,7 +377,7 @@ export default function LandingPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/10 to-transparent pointer-events-none" />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-md text-emerald-600 dark:text-emerald-400">Carbon Garden (Level 3)</h4>
+                  <h3 className="font-extrabold text-md text-emerald-600 dark:text-emerald-400">Carbon Garden (Level 3)</h3>
                   <p className="text-xs opacity-60 leading-relaxed font-semibold max-w-xs mx-auto">
                     Progression stages: Seed → Sprout → Tree → Forest → Thriving Ecosystem. Plants and weather adjust dynamically.
                   </p>
@@ -394,7 +394,7 @@ export default function LandingPage() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="btn-premium px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black inline-flex items-center gap-2 shadow-lg shadow-emerald-500/20 text-sm uppercase tracking-wider"
+              className="btn-premium px-8 py-4 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-black inline-flex items-center gap-2 shadow-lg shadow-emerald-700/20 text-sm uppercase tracking-wider"
             >
               Start My Onboarding Journey
               <ArrowRight className="h-4 w-4" />

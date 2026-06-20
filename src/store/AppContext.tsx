@@ -121,7 +121,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined)
 // Level thresholds (imported from @/lib/constants)
 // ─────────────────────────────────────────────
 
-function calcGardenLevel(points: number): number {
+export function calcGardenLevel(points: number): number {
   let level = 0
   for (let i = LEVEL_THRESHOLDS.length - 1; i >= 0; i--) {
     if (points >= LEVEL_THRESHOLDS[i]) { level = i; break }

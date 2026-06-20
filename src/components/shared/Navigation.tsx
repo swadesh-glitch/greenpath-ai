@@ -244,7 +244,7 @@ export const Navigation: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="btn-premium px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-bold shadow-md shadow-emerald-500/10 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                  className="btn-premium px-5 py-2.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-full text-xs font-bold shadow-md shadow-emerald-700/10 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
                 >
                   Start Journey
                 </motion.button>
@@ -339,7 +339,7 @@ export const Navigation: React.FC = () => {
               </div>
             ) : (
               <Link href="/onboarding" onClick={() => setMobileMenuOpen(false)} className="w-full">
-                <button className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-bold text-sm shadow-md focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none">
+                <button className="w-full py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-bold text-sm shadow-md focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none">
                   Start Journey
                 </button>
               </Link>

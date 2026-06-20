@@ -166,7 +166,7 @@ export default function CarbonGarden() {
                   aria-label={`Preview Level ${lvl}`}
                   className={`h-5.5 w-5.5 rounded text-[9px] font-black transition-all flex items-center justify-center cursor-pointer focus-visible:ring-1 focus-visible:ring-emerald-500 outline-none ${
                     isActive
-                      ? "bg-emerald-600 text-white shadow-sm"
+                      ? "bg-emerald-700 text-white shadow-sm"
                       : "text-sand-200 hover:bg-forest-900/40"
                   }`}
                 >

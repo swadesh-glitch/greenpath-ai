@@ -88,8 +88,10 @@ export default function ClimateAnalysis() {
             </p>
           </div>
 
-          <div className="flex p-1.5 glass-panel-light dark:glass-panel-dark rounded-2xl border border-emerald-500/10">
+          <div role="tablist" className="flex p-1.5 glass-panel-light dark:glass-panel-dark rounded-2xl border border-emerald-500/10">
             <button
+              role="tab"
+              aria-selected={activeSubTab === "story"}
               onClick={() => setActiveSubTab("story")}
               className={`px-4 py-2 text-xs font-bold rounded-xl transition-all ${
                 activeSubTab === "story"
@@ -100,6 +102,8 @@ export default function ClimateAnalysis() {
               My Story
             </button>
             <button
+              role="tab"
+              aria-selected={activeSubTab === "twin"}
               onClick={() => setActiveSubTab("twin")}
               className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 ${
                 activeSubTab === "twin"
@@ -225,7 +229,7 @@ export default function ClimateAnalysis() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="btn-premium px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-emerald-500/10"
+                className="btn-premium px-8 py-4 bg-emerald-700 hover:bg-emerald-600 text-white rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-emerald-700/10"
               >
                 Rewrite Your Story in Missions Center
                 <ArrowRight className="h-4 w-4" />

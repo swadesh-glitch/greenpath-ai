@@ -360,7 +360,7 @@ export default function MissionsHub() {
             onClick={() => router.push("/garden")}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            className="btn-premium w-full md:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-500/10 flex items-center justify-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 outline-none"
+            className="btn-premium w-full md:w-auto px-5 py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-700/10 flex items-center justify-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 outline-none"
             aria-label="View the 3D garden diorama"
           >
             See 3D Garden
@@ -463,7 +463,7 @@ export default function MissionsHub() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={(e) => handleCompleteSignature(e, m.id, m.points)}
-                        className="btn-premium px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-500/10 flex-shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 outline-none"
+                        className="btn-premium px-6 py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-700/10 flex-shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 outline-none"
                         aria-label={`Log action for signature mission: ${m.title}`}
                       >
                         Log Action
@@ -558,7 +558,7 @@ export default function MissionsHub() {
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
                       onClick={(e) => handleCompleteDaily(e, action.id, action.points)}
-                      className="btn-premium px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-500/10 flex-shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 outline-none"
+                      className="btn-premium px-5 py-3 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-black shadow-md shadow-emerald-700/10 flex-shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 outline-none"
                       aria-label={`Log completion of action: ${action.title}`}
                     >
                       Log It
