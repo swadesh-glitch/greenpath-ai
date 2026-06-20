@@ -69,9 +69,9 @@ export function getQuestionText(
  */
 export const REACTION_VARIANTS: Record<string, string[]> = {
   gas_car: [
-    "Got it. Driving a gas car uses a lot of energy, but we can find easy ways to balance it!",
-    "Got it. Driving by yourself is common, let's see how we can make your trips greener.",
-    "Solo driving noted. Let's see how we can save energy on your travels.",
+    "Got it! Driving a gas car is very common, and we can find some fun, simple ways to balance your travels together.",
+    "Thanks for sharing! Let's explore how we can easily save fuel and energy on your journeys.",
+    "Got it! Optimizing routes or sharing rides is a wonderful opportunity to make your trips feel even greener.",
   ],
   transit: [
     "Awesome! Taking the bus or train is a great way to save energy.",
@@ -89,9 +89,9 @@ export const REACTION_VARIANTS: Record<string, string[]> = {
     "Got it. Electric driving is a wonderful way to keep city air clean.",
   ],
   meat_heavy: [
-    "Noted. Eating meat often uses a lot of land and water, but we can try simple swaps.",
-    "Got it. We can look at easy ways to add more plant-based meals.",
-    "Recorded. Even small changes can make a big difference.",
+    "Thanks for sharing! Even small adjustments, like trying one plant-based meal a week, make a wonderful difference.",
+    "Got it! We'll look at some super easy and tasty ways to explore delicious plant-based dishes.",
+    "Perfect! Small, tasty steps make a big difference, and we can take them at your own comfortable pace.",
   ],
   balanced: [
     "A great balance! Mixing in more veggies is a wonderful, healthy choice.",
@@ -119,9 +119,9 @@ export const REACTION_VARIANTS: Record<string, string[]> = {
     "Great! Buying from green brands encourages clean production.",
   ],
   frequent: [
-    "Acknowledged. Buying often keeps factories busy, but we can balance it.",
-    "Got it. We'll explore fun ways to reuse and recycle what we buy.",
-    "Recorded. We can explore green choices for our regular shopping.",
+    "Got it! Shopping often is a great chance to discover pre-loved treasures or choose green packaging options.",
+    "I appreciate you sharing! We'll explore fun, creative ways to reuse, upcycle, and find eco-friendly brands.",
+    "Got it! We can find some cool ways to make your regular shopping trips even more earth-friendly.",
   ],
   smart_home: [
     "Excellent! Smart devices are great at saving power automatically.",
@@ -139,9 +139,9 @@ export const REACTION_VARIANTS: Record<string, string[]> = {
     "Standard power logged. Let's see how simple habits can save electricity.",
   ],
   high_ac: [
-    "Noted. Heating and cooling use the most power at home.",
-    "Understood. Running heating or AC uses a lot of energy, but we can optimize.",
-    "Recorded. We'll find easy tips to keep you comfortable while saving energy.",
+    "Thanks for letting me know! Staying comfortable is key, and we can find simple tips to optimize your energy too.",
+    "Got it! Let's explore some easy, cozy ways to keep you comfortable while saving power.",
+    "Perfect! Let's find small, helpful habits to keep your home feeling great while lowering your energy footprint.",
   ],
 }
 

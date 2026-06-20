@@ -1,5 +1,12 @@
 "use client"
 
+/**
+ * @file Garden3D.tsx
+ * @responsibility Renders the premium low-poly 3D Carbon Garden diorama using React Three Fiber.
+ * Computes terrain heights, maps weather effects (sun, rain, wind), dynamically scales
+ * vegetation based on garden points, and applies smooth seasonal palette transitions.
+ */
+
 import { useRef, useMemo, useEffect, useState, Suspense, memo } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, ContactShadows, Sparkles } from "@react-three/drei"
@@ -8,12 +15,20 @@ import * as THREE from "three"
 // ─────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────
+
+/** Supported weather states driving sky illumination and rain particle animations. */
 type Weather = "sunny" | "windy" | "rainy"
+
+/** Supported seasonal states driving color palettes and foliage shading. */
 type Season = "spring" | "summer" | "autumn" | "winter"
 
+/** Props for the 3D diorama canvas wrapper. */
 interface Garden3DProps {
+  /** The derived garden level integer [0, 5] controlling flora presence. */
   level: number
+  /** The current active weather condition. */
   weather: Weather
+  /** The current active calendar season. */
   season: Season
 }
 
@@ -56,13 +71,30 @@ const DIRT_COLOR = new THREE.Color("#785c33")
 // Shared wind state (ref-driven)
 const windState = { frequency: 0.8, amplitude: 0.018 }
 
-// Seeded pseudo-random for stable placement
+/**
+ * Computes a deterministic pseudo-random decimal in the range [0, 1) using a numeric seed.
+ * Utilizes a trigonometric hash function to maintain identical placements across loads.
+ *
+ * @param seed - Any numeric value to seed the random state.
+ * @returns A deterministic float in [0, 1).
+ */
 function seededRandom(seed: number) {
   const x = Math.sin(seed + 1) * 43758.5453123
   return x - Math.floor(x)
 }
 
-// Global helper to compute displaced terrain height at any (x, z) coordinate
+/**
+ * Computes the physical height (y-coordinate displacement) of the island's low-poly
+ * terrain at any given (x, z) coordinates.
+ *
+ * Integrates an island edge falloff (distance decay) with two layers of sinusoidal
+ * noise for hills, and sinks paths dynamically for pathway visuals.
+ *
+ * @param x     - The relative X coordinate on the island plane.
+ * @param z     - The relative Z coordinate on the island plane.
+ * @param level - The active garden level. If 99, returns a flat plane (demo reset).
+ * @returns The computed terrain height.
+ */
 function getTerrainHeight(x: number, z: number, level: number) {
   if (level === 99) return 0
   const dist = Math.sqrt(x * x + z * z)
@@ -1425,6 +1457,15 @@ function GardenFallback() {
 // ─────────────────────────────────────────────
 // Exported Garden3D Component
 // ─────────────────────────────────────────────
+/**
+ * Main Garden3D Canvas orchestrator.
+ *
+ * Configures the Three.js canvas contexts, checks hardware threads for low-end devices
+ * (reducing shadows and pixel ratio if necessary), and renders the `GardenScene`
+ * inside a Suspense wrapper.
+ *
+ * @param props - {@link Garden3DProps}
+ */
 function Garden3D({ level, weather, season }: Garden3DProps) {
   const isLowEnd = typeof navigator !== "undefined" && navigator.hardwareConcurrency < 4
 

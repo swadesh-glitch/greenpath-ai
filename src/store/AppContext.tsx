@@ -156,6 +156,16 @@ export function calcGardenLevel(points: number): number {
 // ─────────────────────────────────────────────
 // Provider
 // ─────────────────────────────────────────────
+/**
+ * React Context Provider component that wraps the application.
+ *
+ * Seeds initial state from `localStorage` using `loadFromStorage()`, handles
+ * dynamic state changes, evaluates streak bonuses, and synchronizes updates
+ * back to `localStorage` reactively.
+ *
+ * @param props - React children node components.
+ * @returns The wrapped React Context provider element.
+ */
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const saved = loadFromStorage()
 

@@ -25,12 +25,23 @@ Climate change is the defining challenge of our era, yet **most people feel powe
 
 ---
 
+## 🧠 WHY AI IS NEEDED
+
+Static tools fail because human behavior is not one-size-fits-all. A traditional carbon calculator treats a resident in Seattle (92% hydro-powered grid) the same as a resident in Beijing (60% coal-powered grid). 
+
+**GreenPath AI utilizes a deterministic Expert AI Decision Engine to solve this:**
+1. **Dynamic Grid Calibration**: Location is a primary indicator. Clover adjusts household energy footprints by applying real-world carbon intensity scaling factors to the user's city grid mix.
+2. **Cognitive Overhead Reduction**: Instead of dumping a static list of 50 chores on the user, the AI engine surfaces exactly **three high-impact, targeted signature missions** mapping to the user's weakest lifestyle area.
+3. **Emotional Connection**: By translating raw carbon weights into a structured, narrative-driven **Climate Identity Archetype**, the system builds an immediate personal connection that encourages active participation.
+
+---
+
 ## ✅ THE GREENPATH AI SOLUTION
 
 GreenPath AI solves the knowing–doing gap through three interconnected systems:
 
 ### 1. 🤖 Clover — Your Personal AI Carbon Coach
-Clover is not a chatbot. Clover is a **personalized climate intelligence layer** that:
+Clover is not a generic chatbot. Clover is a **personalized climate intelligence layer** that:
 - Conducts a 6-question conversational audit (not a form)
 - Applies your city's real electricity grid intensity to calibrate scoring
 - Generates a unique **Climate Identity Archetype** narrative just for you
@@ -188,22 +199,65 @@ Total baseline:   ~5,859 kg CO₂/yr (1.35 applied to energy raw)
 
 ---
 
-## 🌿 CLIMATE TWIN SYSTEM
+## 🌿 CLIMATE TWIN WALKTHROUGH
 
-The Climate Twin is GreenPath AI's forward-looking projection engine. It models what your life looks like if you follow Clover's action plan to completion.
+The Climate Twin system operates two independent, mathematically rigorous models:
 
-**Projection Formula:**
+### 1. The Onboarding Baseline Projection (`scoring-engine.ts`)
+This establishes a **35% carbon reduction target** based on scientific guidelines.
 ```
 Baseline Annual CO₂ = transport_kg + food_kg + (energy_kg × gridMultiplier) + shopping_kg
-Target Reduction = Baseline × 35%
-savedKg = round(Baseline × 0.35)
-
-Flights Avoided    = max(1, round(savedKg / 350))   // ~350kg per short-haul flight
-Power Months Saved = max(1, round(savedKg / 450))   // ~450kg per avg household month
-Trees Equivalent   = max(10, round(savedKg / 22))   // ~22kg CO₂ per mature tree per year
+Target Saved Kg = round(Baseline × 35%)
 ```
+Equivalents are converted using standard climate indicators:
+* **Flights Avoided**: `max(1, round(TargetSavedKg / 350))` (Reference: ~350kg CO₂ per short-haul domestic flight)
+* **Power Months Saved**: `max(1, round(TargetSavedKg / 450))` (Reference: ~450kg CO₂ per average household electricity month)
+* **Trees Equivalent**: `max(10, round(TargetSavedKg / 22))` (Reference: ~22kg CO₂ sequestered per mature tree per year)
 
-The Climate Twin tab on `/analysis` also features **interactive behavior sliders** — users can drag transit, diet, energy, and shopping sliders to model hypothetical scenarios, building intuition about which habits matter most.
+### 2. The Interactive Slider Simulator (`ClimateTwinView.tsx`)
+Located on `/analysis`, this lets the user manually configure transit, diet, energy, and shopping sliders (0–100%) to model custom futures:
+```
+Projected Carbon Saved = (TransitSlider / 100 × 1200) + (DietSlider / 100 × 600) + (EnergySlider / 100 × 450) + (ShoppingSlider / 100 × 300)
+```
+Simulated equivalents are calculated dynamically:
+* **Flights Avoided**: `ProjectedSaved / 250` (Reference: Delhi-Mumbai roundtrip flight ≈ 250kg CO₂)
+* **Power Months Saved**: `ProjectedSaved / 120` (Reference: Average local household month grid power ≈ 120kg CO₂)
+* **Tree Equivalents**: `ProjectedSaved / 21` (Reference: Mature tree absorption rate ≈ 21kg CO₂/year)
+
+Dragging the sliders feeds directly into a linear color interpolation filter that transforms the 3D-feeling planet map from a dusty sepia/gray hue to vibrant emerald green in real time.
+
+---
+
+## 👤 END-TO-END USER LIFE CYCLE
+
+Here is how a single user ("Alex") moves through the entire system:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Alex (User)
+    participant UI as Chat & Dashboard UI
+    participant API as POST /api/profile
+    participant Engine as Scoring Engine (lib)
+    participant Store as AppContext (localStorage)
+
+    User->>UI: Types name and city ("Delhi")
+    User->>UI: Chooses gas car, vegetarian diet, eco-conscious, solar power
+    UI->>API: Submits answers via JSON body
+    API->>Engine: Validates with Zod and triggers calculateProfile()
+    Note over Engine: Applies 1.35x Grid Multiplier to Delhi<br/>Calculates composite score C = 4.88<br/>Identifies Solar (Strength) & Gas Car (Opportunity)
+    Engine-->>API: Returns ScoredProfile JSON
+    API-->>UI: Updates profile payload
+    UI->>Store: Calls completeAIOnboarding()
+    Note over Store: Seeding initial profile & 3 signature missions into localStorage
+    Store-->>UI: Seeding successful (level 1 seedling unlocked)
+    User->>UI: Opens /garden (renders 3D low-poly wildflowers)
+    User->>UI: Visits /missions and logs "Active Transit Challenge" (+65 pts)
+    UI->>Store: Adds points and updates total points to 115 pts
+    Note over Store: Evaluates calcGardenLevel(115)<br/>Returns Level 2
+    Store-->>UI: Trigger level-up state change
+    UI->>User: Displays animated particle burst & level-up toast
+```
 
 ---
 
@@ -241,9 +295,16 @@ Beyond AI Signature Missions, users also unlock **Daily Eco-Actions** (8 rotatin
 │   │   │   ├── page.tsx       # Main page orchestrator (state machine, API call)
 │   │   │   ├── onboarding-data.ts  # Static questions, options, reaction variants
 │   │   │   ├── LoadingStep.tsx     # Generation loading screen sub-component
-│   │   │   └── RevealStep.tsx      # 4-screen cinematic reveal sub-component
+│   │   │   ├── RevealStep.tsx      # 4-screen cinematic reveal sub-component
+│   │   │   ├── ChatStep.tsx        # Conversational chat screen layout sub-component
+│   │   │   ├── WordReveal.tsx      # Staggered typewriter word-reveal sub-component
+│   │   │   └── audio-utils.ts      # Client-side arpeggio synthesizer utility
 │   │   ├── garden/            # /garden — 3D Carbon Garden diorama
 │   │   ├── missions/          # /missions — Mission logging hub
+│   │   │   ├── page.tsx       # Main missions controller
+│   │   │   ├── GardenPreviewPanel.tsx  # Sticky garden diorama progress tracker
+│   │   │   ├── SignatureMissionsList.tsx # Custom AI signature missions lists
+│   │   │   └── EcoActionsList.tsx  # Standard eco action cards
 │   │   ├── analysis/          # /analysis — Climate Twin simulator
 │   │   │   └── ClimateTwinView.tsx # Interactive twin slider component
 │   │   ├── identity/          # /identity — Full profile card
@@ -260,8 +321,8 @@ Beyond AI Signature Missions, users also unlock **Daily Eco-Actions** (8 rotatin
 │   │   ├── category-utils.tsx # Shared icon/emoji/badge utilities
 │   │   └── constants.ts       # Garden level thresholds (single source of truth)
 │   └── store/
-│       └── AppContext.tsx     # React Context + localStorage state management
-├── vitest.config.ts           # Test runner config (JSDOM environment)
+│   │   └── AppContext.tsx     # React Context + localStorage state management
+│   └── vitest.config.ts       # Test runner config (JSDOM environment)
 └── playwright.config.ts       # E2E test config
 ```
 
@@ -295,11 +356,6 @@ graph TD
 - **Grid Multiplier:** Coal-heavy cities (Delhi/Mumbai/Beijing/Sydney/Johannesburg) → ×1.35; Clean-energy cities (Oslo/Seattle/Vancouver/Stockholm/Copenhagen) → ×0.35; All others → ×1.0
 - **Composite:** `C = Transport×0.35 + Food×0.30 + Energy×0.20 + Shopping×0.15`
 - **Twin Savings:** Baseline CO₂ reduced by 35%; converted to flights (÷350 kg), power months (÷450 kg), trees (÷22 kg/yr)
-
-### Practical Real-World Usability
-- **Immediate Micro-feedback:** Mission completion fires particle bursts and live point/level updates
-- **Judge-Optimized Demo:** Reaching Level 5 takes ~7–8 clicks (1.5 minutes)
-- **Zero-Bypass Routing:** Route guards redirect un-onboarded visitors to `/onboarding`
 
 ---
 
@@ -352,12 +408,12 @@ npm run lint          # ESLint check
 |---|---|---|
 | **Auth & Persistence** | Client `localStorage` only | Supabase Auth + PostgreSQL profile database |
 | **AI Scoring** | Rule-based deterministic engine | Hybrid: scoring engine + LLM narrative generation (Gemini 2.0 Flash) |
-| **City Coverage** | 10 hardcoded grid-intensity cities | EIA/IEA API integration for real-time grid carbon intensity by city |
-| **Mission Library** | 12 templates across 4 categories | Dynamic pool of 200+ missions with weekly community additions |
-| **Garden Sharing** | None | Social sharing cards with per-user garden snapshot |
-| **Streak System** | Disabled (always 0 bonus) | Full consecutive-day streak with configurable bonus multipliers |
-| **Push Notifications** | None | Daily Clover nudges via Web Push API |
-| **Accessibility** | WCAG AA (axe verified) | WCAG AAA target with screen-reader-optimised 3D garden fallback |
+| **City Grid APIs** | 10 hardcoded grid-intensity cities | Real-time EIA/IEA API integration for dynamic grid carbon intensity by city |
+| **Mission Library** | 12 templates across 4 categories | Dynamic pool of 200+ localized missions with community contributions |
+| **Garden Sharing** | None | HTML5 Canvas snapshots for direct social media sharing cards |
+| **Streak System** | Disabled (always 0 bonus) | Consecutive daily log multipliers to encourage long-term retention |
+| **Push Notifications** | None | Daily scheduling nudges via Web Push API |
+| **Accessibility** | WCAG AA (axe verified) | WCAG AAA target with full screen-reader-optimised 3D garden fallback |
 
 ---
 

@@ -38,6 +38,11 @@ export interface ScoredProfile {
 /** The four lifestyle categories scored by the engine. */
 export type CategoryKey = "transport" | "food" | "energy" | "shopping"
 
+// Scientific conversion references
+const FLIGHT_CO2_KG_CONVERSION = 350     // ~350kg per short-haul flight reference
+const HOME_POWER_CO2_KG_CONVERSION = 450   // ~450kg per average household month reference
+const TREE_CO2_KG_CONVERSION = 22         // ~22kg CO₂ per mature tree year reference
+
 // ─────────────────────────────────────────────
 // Raw Lifecycle Carbon Emissions (kg CO2/year)
 // ─────────────────────────────────────────────
@@ -530,13 +535,13 @@ export function calculateProfile(answers: OnboardingAnswers): ScoredProfile {
   const savedKg = Math.round(totalEmissionsKg * 0.35)
 
   // scientific conversion metrics
-  const flights = Math.max(1, Math.round(savedKg / 350)) // ~350kg per flight
-  const powerMonths = Math.max(1, Math.round(savedKg / 450)) // ~450kg per home power month
-  const trees = Math.max(10, Math.round(savedKg / 22)) // ~22kg per tree-year
+  const flights = Math.max(1, Math.round(savedKg / FLIGHT_CO2_KG_CONVERSION))
+  const powerMonths = Math.max(1, Math.round(savedKg / HOME_POWER_CO2_KG_CONVERSION))
+  const trees = Math.max(10, Math.round(savedKg / TREE_CO2_KG_CONVERSION))
 
   const twin: ClimateTwinData = {
-    currentProjection: `If you keep your current ${CATEGORY_NAMES[worst.key]} habits, you will continue to use a high amount of energy.`,
-    improvedProjection: `By finishing these fun challenges, you will save ${savedKg} kg of carbon every year, keeping our skies blue and our earth healthy!`,
+    currentProjection: `Your current ${CATEGORY_NAMES[worst.key]} habits are a wonderful foundation to build on, with massive potential for positive green changes.`,
+    improvedProjection: `By taking on these fun challenges, you'll unlock an incredible ${savedKg} kg of carbon savings every year, helping our earth thrive!`,
     equivalents: {
       flightsAvoided: flights,
       householdPowerMonths: powerMonths,
@@ -564,7 +569,7 @@ export function calculateProfile(answers: OnboardingAnswers): ScoredProfile {
     difficulty: "hard",
     frequency: worstHardTemplate.frequency,
     completed: false,
-    reasoning: `Recommended: This targets your highest energy-use area (${CATEGORY_NAMES[worst.key]}) for maximum impact.`,
+    reasoning: `Clover's recommendation: This targets your highest energy-use area (${CATEGORY_NAMES[worst.key]}) to unlock your biggest carbon savings!`,
   })
 
   // Worst category Medium mission
@@ -579,7 +584,7 @@ export function calculateProfile(answers: OnboardingAnswers): ScoredProfile {
     difficulty: "medium",
     frequency: worstMediumTemplate.frequency,
     completed: false,
-    reasoning: `Recommended: Simple, everyday habits to lower your usage in ${CATEGORY_NAMES[worst.key]}.`,
+    reasoning: `Clover's recommendation: Simple, everyday habits that turn green potential into real savings for your ${CATEGORY_NAMES[worst.key]}.`,
   })
 
   // Best category Easy mission
@@ -594,7 +599,7 @@ export function calculateProfile(answers: OnboardingAnswers): ScoredProfile {
     difficulty: "easy",
     frequency: bestEasyTemplate.frequency,
     completed: false,
-    reasoning: `Recommended: Built to keep up your awesome habits in ${CATEGORY_NAMES[best.key]}!`,
+    reasoning: `Clover's recommendation: Built to keep up your awesome habits in ${CATEGORY_NAMES[best.key]} by celebrating your daily green choices!`,
   })
 
   return {

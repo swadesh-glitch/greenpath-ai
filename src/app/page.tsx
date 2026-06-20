@@ -1,5 +1,12 @@
 "use client"
 
+/**
+ * @file page.tsx
+ * @responsibility Main application landing page.
+ * Implements a premium parallax storytelling layout synced to scroll gestures,
+ * transforming a polluted planet model into a thriving ecosystem as the user scrolls.
+ */
+
 import React, { useState, useRef } from "react"
 import Link from "next/link"
 import dynamic from "next/dynamic"
@@ -16,6 +23,11 @@ const Globe = dynamic(() => import("@/components/storytelling/Globe").then((mod)
   ),
 })
 
+/**
+ * Renders the home landing page.
+ * Tracks viewport scrolling bounds, maps progress onto environmental steps,
+ * and passes states to the floating planet component.
+ */
 export default function LandingPage() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)

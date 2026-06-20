@@ -1,7 +1,15 @@
+/**
+ * @file Globe.tsx
+ * @responsibility Renders an interactive 3D-looking planet simulation on the landing page
+ * using 2D gradients, CSS shadows, and a scrolling cylinder map projection.
+ * Animates polluted, awareness, recovery, and thriving states dynamically.
+ */
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-// Twinkling Star Field Background
+/**
+ * Renders a twinkling grid of background stars that fade behind the planet.
+ */
 const StarField: React.FC = () => {
   return (
     <div className="absolute inset-[-80px] pointer-events-none -z-20">
@@ -23,7 +31,10 @@ const StarField: React.FC = () => {
   )
 }
 
-// Conic-gradient rotating Sunlight Rays overlay (renders in Thriving stage)
+/**
+ * Conic-gradient rotating Sunlight Rays overlay.
+ * Renders only in the "thriving" stage to represent ecological recovery.
+ */
 const SunlightRays: React.FC = () => {
   return (
     <div 
@@ -36,14 +47,22 @@ const SunlightRays: React.FC = () => {
   )
 }
 
-// 2D Pulsing Hotspot Marker overlay (Scene 2)
+/** Props for rendering a single 2D pulsing hotspot. */
 interface PulseHotspot2DProps {
+  /** Left CSS position percentage (e.g. "45%"). */
   left: string
+  /** Top CSS position percentage (e.g. "60%"). */
   top: string
+  /** Descriptive textual label for the hotspot capsule. */
   label: string
+  /** Dynamic opacity factor based on Earth rotation and scroll visibility. */
   opacity: number
 }
 
+/**
+ * Renders a single 2D pulsing hotspot dot on the surface of the cylinder Earth map.
+ * Used to draw attention to specific carbon impact vectors during the scroll path.
+ */
 const PulseHotspot2D: React.FC<PulseHotspot2DProps> = ({ left, top, label, opacity }) => {
   return (
     <>
@@ -71,11 +90,21 @@ const PulseHotspot2D: React.FC<PulseHotspot2DProps> = ({ left, top, label, opaci
   )
 }
 
+/** Props for the hotspots connector container overlay. */
 interface Hotspots2DProps {
+  /** Page scroll progress factor [0, 1]. */
   progress: number
+  /** The derived rotation angle of the Earth map. */
   earthAngle: number
 }
 
+/**
+ * Computes, positions, and draws quadratic SVG Bezier curve connectors between
+ * the active lifestyle category hotspots on the spinning planet. Renders only
+ * during the awareness scroll phase.
+ *
+ * @param props - {@link Hotspots2DProps}
+ */
 const Hotspots2D: React.FC<Hotspots2DProps> = ({ progress, earthAngle }) => {
   const isVisible = progress >= 0.25 && progress <= 0.55
 
@@ -249,12 +278,25 @@ const Hotspots2D: React.FC<Hotspots2DProps> = ({ progress, earthAngle }) => {
   )
 }
 
+/** Props for the storytelling Globe component. */
 interface GlobeProps {
+  /** The current storytelling phase driving planetary visuals. */
   stage: "polluted" | "awareness" | "recovery" | "thriving"
+  /** Relative landing page scroll progress [0, 1]. */
   progress?: number
+  /** Unused zoom scaling factor reserved for future viewport configurations. */
   zoom?: number
 }
 
+/**
+ * Renders the photorealistic 3D-looking Earth sphere overlay.
+ *
+ * Utilizes scrolling flat textures (base map + cloud layer) to simulate
+ * constant dynamic spin, overlaid with radial lighting gradients and
+ * reactive CSS drop-shadows that change color based on ecological progression.
+ *
+ * @param props - {@link GlobeProps}
+ */
 export const Globe: React.FC<GlobeProps> = ({ stage, progress = 0.0 }) => {
   const [time, setTime] = useState(0)
 

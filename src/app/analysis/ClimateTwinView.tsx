@@ -1,4 +1,9 @@
-"use client"
+/**
+ * @file ClimateTwinView.tsx
+ * @responsibility Interactive simulator representing the user's Future Climate Twin.
+ * Displays interactive sliders to adjust lifestyle options and projects annual CO2
+ * savings and equivalents in real-time, accompanied by a dynamic spinning planet model.
+ */
 
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -8,6 +13,11 @@ import {
   Plane, ArrowRight
 } from "lucide-react"
 
+// Scientific conversion references
+const FLIGHT_CO2_KG_CONVERSION = 250     // Delhi–Mumbai ≈ 250 kg CO2 reference
+const HOME_POWER_CO2_KG_CONVERSION = 120   // average household electricity month reference
+const TREE_CO2_KG_CONVERSION = 21         // annual mature tree carbon absorption reference
+
 const TRANSIT_MAX_KG  = 1200   // ~42 kg/mo × 12 = 504 → upgraded to realistic max
 const DIET_MAX_KG     = 600
 const ENERGY_MAX_KG   = 450
@@ -15,18 +25,28 @@ const SHOPPING_MAX_KG = 300
 
 type SliderKey = "transit" | "diet" | "energy" | "shopping"
 
+/** State representing the sliders percentage progression [0, 100]. */
 export interface TwinState {
-  transit:  number   // 0–100
+  transit:  number
   diet:     number
   energy:   number
   shopping: number
 }
 
 interface ClimateTwinViewProps {
+  /** The twin state value object. */
   twin: TwinState
+  /** React state setter dispatch. */
   setTwin: React.Dispatch<React.SetStateAction<TwinState>>
 }
 
+/**
+ * ClimateTwinView component illustrating interactive twin projections.
+ * Computes savings on slider changes and adjusts sepia/saturation/brightness filters
+ * on the 3D-feeling planet map.
+ *
+ * @param props - {@link ClimateTwinViewProps}
+ */
 export function ClimateTwinView({ twin, setTwin }: ClimateTwinViewProps) {
   const router = useRouter()
 
@@ -63,9 +83,9 @@ export function ClimateTwinView({ twin, setTwin }: ClimateTwinViewProps) {
   const avgProgress = (twin.transit + twin.diet + twin.energy + twin.shopping) / 400 // 0–1
 
   // Derived stats
-  const flightsAvoided   = +(totalKgYear / 250).toFixed(1)  // Delhi–Mumbai ≈ 250 kg CO2
-  const gridMonthsSaved  = +(totalKgYear / 120).toFixed(1)  // avg home ≈ 120 kg/mo
-  const treeEquivalents  = Math.round(totalKgYear / 21)     // mature tree ≈ 21 kg/yr
+  const flightsAvoided   = +(totalKgYear / FLIGHT_CO2_KG_CONVERSION).toFixed(1)
+  const gridMonthsSaved  = +(totalKgYear / HOME_POWER_CO2_KG_CONVERSION).toFixed(1)
+  const treeEquivalents  = Math.round(totalKgYear / TREE_CO2_KG_CONVERSION)
 
   // ── Globe CSS filter ─────────────────────────────────────────────────────
   // Uses an eased curve so even one slider at 100% (p=0.25) makes a very
