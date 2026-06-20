@@ -127,6 +127,24 @@ const AppContext = createContext<AppContextType | undefined>(undefined)
 // Level thresholds (imported from @/lib/constants)
 // ─────────────────────────────────────────────
 
+/**
+ * Derives the Carbon Garden diorama level (0–5) from accumulated points.
+ *
+ * Iterates `LEVEL_THRESHOLDS` in reverse order so the highest qualifying
+ * threshold wins, avoiding a redundant ascending comparison loop.
+ *
+ * | Level | Min Points | Garden State     |
+ * |-------|-----------|------------------|
+ * | 0     | 0          | Empty sprout     |
+ * | 1     | 50         | Seedling         |
+ * | 2     | 120        | Sapling          |
+ * | 3     | 200        | Young tree       |
+ * | 4     | 300        | Mature forest    |
+ * | 5     | 450        | Thriving ecosystem |
+ *
+ * @param points - Non-negative integer representing total accumulated points.
+ * @returns Garden level integer in the range [0, 5].
+ */
 export function calcGardenLevel(points: number): number {
   let level = 0
   for (let i = LEVEL_THRESHOLDS.length - 1; i >= 0; i--) {
@@ -253,6 +271,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // ─────────────────────────────────────────────
   // Streak update helper
   // ─────────────────────────────────────────────
+  /**
+   * Evaluates streak state and returns a bonus points value.
+   *
+   * In the production build this would compute the consecutive-day streak
+   * and award up to +10 bonus points. For the hackathon demo, the streak
+   * bonus is disabled (always returns 0) so users reach peak garden level
+   * within a single demo session without waiting multiple days.
+   *
+   * @returns Streak bonus points to add on top of the mission/action reward.
+   */
   const updateStreak = useCallback(() => {
     return 0 // Disable streak bonus for the hackathon demo
   }, [])
@@ -260,6 +288,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // ─────────────────────────────────────────────
   // Add points + CO2 helper
   // ─────────────────────────────────────────────
+  /**
+   * Atomically adds reward points and CO₂ savings to the user profile.
+   *
+   * Uses a functional `setState` update to avoid stale closures in rapid
+   * successive calls (e.g. bulk mission logging). CO₂ savings are rounded to
+   * two decimal places to prevent floating-point drift across sessions.
+   *
+   * @param pts - Positive integer points to add to `totalPoints`.
+   * @param co2 - Non-negative kg CO₂ savings to accumulate in `co2SavedKg`.
+   */
   const addReward = useCallback((pts: number, co2: number) => {
     setProfile((prev) => ({
       ...prev,
@@ -274,10 +312,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // ─────────────────────────────────────────────
   // Actions
   // ─────────────────────────────────────────────
+  /**
+   * Advances or rewinds the conversational onboarding step counter.
+   *
+   * @param step - Target step index (0-based). Steps correspond to questionnaire questions.
+   */
   const setOnboardingStep = useCallback((step: number) => {
     setOnboardingStepState(step)
   }, [])
 
+  /**
+   * Finalizes the legacy (non-AI) onboarding flow.
+   *
+   * Looks up the selected `ClimateIdentity` record by ID, updates the user
+   * profile, and grants the 50-point starting bonus. Used by the static
+   * identity picker; superseded by `completeAIOnboarding` for the AI flow.
+   *
+   * @param identityId - The `id` field of the chosen `ClimateIdentity`.
+   * @param name       - The user's display name entered during onboarding.
+   */
   const completeOnboarding = useCallback((identityId: string, name: string) => {
     const identity = climateIdentities.find((id) => id.id === identityId) || climateIdentities[0]
     setSelectedIdentity(identity)
@@ -290,6 +343,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsOnboarded(true)
   }, [])
 
+  /**
+   * Finalizes the AI-powered onboarding flow and seeds the app state.
+   *
+   * Called by the onboarding page immediately after `generateClimateProfile`
+   * resolves. Stores all AI outputs (identity, story, twin projection, and
+   * three signature missions) into context and localStorage, grants the 50-point
+   * starting bonus, and marks the user as onboarded.
+   *
+   * @param name        - User display name from the conversational chat.
+   * @param answers     - Raw onboarding answers (city, transport, food, shopping, energy).
+   * @param generatedId - AI-generated archetype name, description, strength, and opportunity.
+   * @param story       - Personalised 2–4 sentence carbon narrative from `scoring-engine.ts`.
+   * @param twin        - Climate twin projection with CO₂ savings and real-world equivalents.
+   * @param aiMissions  - Three signature missions (hard + medium from worst, easy from best).
+   */
   const completeAIOnboarding = useCallback((
     name: string,
     answers: OnboardingAnswers,
@@ -312,6 +380,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsOnboarded(true)
   }, [])
 
+  /**
+   * Marks a signature mission as completed and rewards points + CO₂ savings.
+   *
+   * Idempotent: calling this with an already-completed mission ID is a no-op.
+   * Streak bonus is evaluated via `updateStreak()` before the reward is applied.
+   *
+   * @param missionId - The `id` field of the `AIMission` to complete.
+   */
   const completeMission = useCallback((missionId: string) => {
     setMissions((prev) =>
       prev.map((m) => {
@@ -323,6 +399,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     )
   }, [updateStreak, addReward])
 
+  /**
+   * Marks a daily eco-action as completed and rewards points + CO₂ savings.
+   *
+   * Identical idempotency guarantee to `completeMission`. Daily actions reset
+   * each day when `refreshDailyActions` is called with a new date seed.
+   *
+   * @param actionId - The `id` field of the `DailyEcoAction` to complete.
+   */
   const completeDailyAction = useCallback((actionId: string) => {
     setDailyActions((prev) =>
       prev.map((a) => {
@@ -334,6 +418,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     )
   }, [updateStreak, addReward])
 
+  /**
+   * Completes the active weekly challenge and awards its points + CO₂ reward.
+   *
+   * No-op if `weeklyChallenge` is null or already completed. Weekly challenges
+   * are seeded deterministically so the same challenge is shown across devices
+   * during the same ISO calendar week.
+   */
   const completeWeeklyChallenge = useCallback(() => {
     if (!weeklyChallenge || weeklyChallenge.completed) return
     const bonus = updateStreak()
@@ -341,6 +432,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setWeeklyChallenge((prev) => (prev ? { ...prev, completed: true } : prev))
   }, [weeklyChallenge, updateStreak, addReward])
 
+  /**
+   * Re-rolls the daily eco-action pool once per calendar day.
+   *
+   * An `offsetSeed` (today's date + `"_reroll"`) ensures the re-roll always
+   * produces a different set of three actions than the initial morning pick.
+   * Calling this a second time on the same day is a no-op (`hasRerolledToday`).
+   */
   const refreshDailyActions = useCallback(() => {
     if (hasRerolledToday) return
     const today = getTodayStr()
@@ -350,10 +448,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setHasRerolledToday(true)
   }, [hasRerolledToday])
 
+  /**
+   * Permanently dismisses the 3D garden intro camera animation.
+   *
+   * Stored in `PersistedState` so returning users skip the cinematic dolly-in
+   * on subsequent sessions and land directly on the interactive diorama.
+   */
   const markGardenIntroSeen = useCallback(() => {
     setHasSeenGardenIntro(true)
   }, [])
 
+  /**
+   * Hard-resets all application state to factory defaults.
+   *
+   * Clears the `greenpath_app_state` localStorage key and restores every slice
+   * of React state to its initial value. Intended for the floating "Reset Demo"
+   * button used by hackathon judges to start a fresh walkthrough without
+   * refreshing the browser tab.
+   */
   const resetApp = useCallback(() => {
     setIsOnboarded(false)
     setOnboardingStepState(0)
@@ -441,6 +553,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   )
 }
 
+/**
+ * Convenience hook for consuming the `AppContext` from any client component.
+ *
+ * Throws a descriptive error when called outside `<AppProvider>` so
+ * mis-use is caught immediately during development rather than producing
+ * a silent undefined context.
+ *
+ * @returns The full `AppContextType` — all state values and action callbacks.
+ * @throws {Error} If called outside an `<AppProvider>` subtree.
+ */
 export const useAppContext = () => {
   const context = useContext(AppContext)
   if (!context) throw new Error("useAppContext must be used within an AppProvider")

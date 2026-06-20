@@ -10,6 +10,17 @@ An interactive, AI-driven personal climate companion that turns carbon footprint
 - **Hackathon Vertical:** Interactive Sustainability & Ecological Gamification.
 - **Core Persona: Clover (AI Carbon Coach):** Clover is a supportive, encouraging, and optimistic personal climate advisor. Clover engages in a dynamic conversational interview, analyzes the user's micro-habits, and translates dry data into a personalized story, relatable equivalents, and tailored carbon-saving missions.
 
+#### Why a Smart AI Advisor — Not Just a Dashboard
+Most carbon-footprint tools present a generic score and a static list of tips. GreenPath AI takes a fundamentally different approach: **Clover, the AI Carbon Coach, builds a personalised relationship with the user** by:
+
+1. **Conducting a conversational audit** (6 targeted questions on transport, diet, energy, and shopping) rather than displaying a blank spreadsheet form.
+2. **Applying city-level grid intensity** — a user in Delhi gets a 1.35× energy-impact multiplier (coal-heavy grid) while a user in Oslo gets 0.35× (hydro/wind grid). This means Clover's analysis is *geographically truthful*, not a global average.
+3. **Generating a deterministic identity archetype** (e.g. "Transit Star & Energy Auditor") from the composite score so users receive a *narrative* they can emotionally connect with, not just a number.
+4. **Surfacing exactly 3 signature missions** targeting the user's weakest category (1 hard + 1 medium) plus their strongest category (1 easy) — ensuring the action plan is *achievable and motivating*, not overwhelming.
+5. **Gamifying progress** through a 3D low-poly carbon garden diorama that scales from a sprout (Level 0) to a thriving ecosystem (Level 5) in a single session — making CO₂ savings *visible and rewarding*.
+
+This architecture directly addresses the core problem statement: most people know climate change is serious but feel powerless. Clover solves the **knowing–doing gap** by making sustainable action personal, incremental, and immediately rewarding.
+
 ### 2. Decision Logic & Architecture
 The system uses a unified carbon-scoring engine (`scoring-engine.ts`) on the server backend that executes dynamic generation:
 ```mermaid
@@ -46,10 +57,16 @@ This was a deliberate scope decision for the hackathon timeline:
 To experience the full loop: complete onboarding, then visit `/missions` and log a few actions — you'll see points update in the nav and the Carbon Garden level change in real time.
 
 ## Quick Demo Path (for reviewers)
-1. Visit `/onboarding` and complete the 6 questions (~1 min).
-2. View your AI-generated Climate Identity + Carbon Story reveal.
-3. Click "Start My Journey" → lands on Carbon Garden (Level 1).
-4. Visit `/missions` and log 3-4 actions to see points and garden level update live.
+1. Visit `/onboarding` — Clover greets you and asks 6 questions:
+   - **Name** (free text, e.g. "Alex")
+   - **City** (try "Delhi" for coal-grid scoring, or "Oslo" for clean-grid scoring)
+   - **Transport** (choose Walk/Bike, Transit, Electric Car, or Gas Car)
+   - **Diet** (choose Vegan, Vegetarian, Balanced, or Meat Heavy)
+   - **Shopping** (choose Minimalist, Conscious, or Frequent Shopper)
+   - **Home Energy** (choose Solar, Standard, or AC Heavy)
+2. Watch the 4-step cinematic reveal: identity archetype → personalized carbon story → climate twin projections → 3 custom missions.
+3. Click "Enter My Carbon Garden" → lands on the 3D diorama (Level 1 sprout).
+4. Visit `/missions` and log 3–4 actions — watch points update in the nav and the garden level rise live.
 5. Visit `/analysis` to see the Climate Twin slider simulator respond in real time.
 6. Visit `/identity` for the full AI-generated profile summary.
 
@@ -186,4 +203,21 @@ The core business logic and state machine achieve outstanding test coverage:
 10. **Mission idempotency** — completing the same mission twice does not award double points.
 11. **E2E Lifecycle Flow** — Playwright verifies onboarding inputs, page transition fades, daily action completion, points increment, and diorama layout visibility.
 12. **Axe A11y Verification** — All page components run axe checks in Vitest ensuring zero WCAG violations are introduced on render.
+
+## 🌐 PRODUCTION ROADMAP
+
+GreenPath AI was scoped for a single-session hackathon demo. The following table documents the clear path to a production-grade product:
+
+| Feature | Hackathon State | Production Path |
+|---|---|---|
+| **Auth & Persistence** | Client `localStorage` only | Supabase Auth + PostgreSQL profile database |
+| **AI Scoring** | Rule-based deterministic engine | Hybrid: scoring engine + LLM narrative generation (Gemini 2.0 Flash) |
+| **City Coverage** | 10 hardcoded grid-intensity cities | EIA/IEA API integration for real-time grid carbon intensity by city |
+| **Mission Library** | 16 static templates (4 categories × 4 tiers) | Dynamic pool of 200+ missions with weekly community additions |
+| **Garden Sharing** | None | Social sharing cards with per-user garden snapshot |
+| **Streak System** | Disabled (always 0 bonus) | Full consecutive-day streak with configurable bonus multipliers |
+| **Push Notifications** | None | Daily Clover nudges via Web Push API |
+| **Accessibility** | WCAG AA (axe verified) | WCAG AAA target with screen-reader-optimised 3D garden fallback |
+
+---
 
