@@ -98,18 +98,34 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to walk th
 
 ## 🧪 TESTING GUIDE & AUTOMATED VERIFICATION
 
-We have a comprehensive automated unit testing suite utilizing **Vitest** to verify the mathematical accuracy, grid modifiers, and logical overrides of our local scoring engine.
+We have a comprehensive automated unit testing suite utilizing **Vitest** — **91 tests across 5 test files** — covering the mathematical accuracy, input validation, XSS sanitization, data integrity, and state logic of GreenPath AI.
 
 ### Run Automated Tests
 
-To run the test suite and verify calculations:
 ```bash
 npm run test
 ```
 
-This runs Vitest on [scoring-engine.test.ts](file:///d:/PROMPT%20WAR/greenpath-ai/src/lib/scoring-engine.test.ts) covering:
-1. **Weighted composite calculations** for extreme high emissions profile.
-2. **Bounds checking** to ensure extremely clean profiles generate the "Thriving Green Sanctuary Citizen" title.
-3. **Grid modifiers verification** comparing Delhi (1.35x coal grid) and Oslo (0.35x clean energy grid).
-4. **Dynamic mission targeting** ensuring recommendation logic correctly aligns "hard" and "medium" difficulty actions to the user's highest footprint category and "easy" actions to their strength.
+### Test Coverage Summary
+
+| Test File | Tests | What It Covers |
+|---|---|---|
+| `src/lib/scoring-engine.test.ts` | 5 | Core composite math, grid multipliers, mission targeting |
+| `src/lib/scoring-engine-extended.test.ts` | 21 | Edge cases (empty/min/max), narrative determinism, climate twin projection math |
+| `src/app/api/profile/api-profile-validation.test.ts` | 24 | Zod schema validation (all enums, boundary lengths), XSS escaping, response shape |
+| `src/data/daily-eco-actions.test.ts` | 19 | Pool size, no duplicates, completed flag reset, data shape, category coverage, mutation safety |
+| `src/store/app-state-logic.test.ts` | 22 | Garden level thresholds (all 6 levels), point accumulation, CO₂ floating-point rounding, mission idempotency |
+
+### Key Verification Areas
+
+1. **Weighted composite calculations** — verified for high, low, and zero-value input profiles.
+2. **Bounds / title overrides** — `composite ≤ 1.8` → "Green Earth Champion"; `composite ≥ 8.5` → "Green Path Beginner".
+3. **Grid intensity modifiers** — Delhi/Sydney (1.35×), Oslo/Seattle (0.35×), London (1.0×) all verified.
+4. **Narrative determinism** — same city always produces the same story variant (hash-stable `selectIndex`).
+5. **Climate Twin projections** — flights, power months, and trees computed from 35% of baseline emissions.
+6. **Zod API validation** — all enum fields, name/city length boundaries, missing-field rejection.
+7. **XSS sanitization** — `escapeHtml` neutralizes `<`, `>`, `&`, `"`, `'`, `/` injection vectors.
+8. **Daily eco-actions pool** — 8 items, unique IDs, all `completed: false` on every pick, covers ≥3 categories.
+9. **Garden level math** — all 6 threshold transitions (0, 50, 120, 200, 300, 450 pts) verified precisely.
+10. **Mission idempotency** — completing the same mission twice does not award double points.
 
