@@ -7,6 +7,7 @@ import { climateIdentities, ClimateIdentity } from "@/data/climate-identities"
 import { OnboardingAnswers, GeneratedIdentity, ClimateTwinData, AIMission } from "@/lib/ai-engine"
 import { DailyEcoAction, pickDailyActions } from "@/data/daily-eco-actions"
 import { WeeklyChallenge, getWeeklyChallenge } from "@/data/weekly-challenges"
+import { LEVEL_THRESHOLDS } from "@/lib/constants"
 
 // ─────────────────────────────────────────────
 // Helpers
@@ -117,9 +118,8 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
 // ─────────────────────────────────────────────
-// Level thresholds
+// Level thresholds (imported from @/lib/constants)
 // ─────────────────────────────────────────────
-const LEVEL_THRESHOLDS = [0, 50, 120, 200, 300, 450]
 
 function calcGardenLevel(points: number): number {
   let level = 0

@@ -8,8 +8,7 @@ import { Sprout, Award, Menu, X, Compass, BarChart2, User, HelpCircle, Target, F
 import { useAppContext } from "@/store/AppContext"
 import { cn } from "@/lib/utils"
 import { Counter } from "@/components/shared/Counter"
-
-const LEVEL_THRESHOLDS = [0, 50, 120, 200, 300, 450]
+import { LEVEL_THRESHOLDS } from "@/lib/constants"
 
 function calcProgress(points: number): number {
   const curIdx = LEVEL_THRESHOLDS.reduce((best, t, i) => (points >= t ? i : best), 0)

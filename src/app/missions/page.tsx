@@ -6,12 +6,14 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useAppContext } from "@/store/AppContext"
 import { PageBackground } from "@/components/shared/PageBackground"
 import {
-  Target, Check, Award, Sparkles, Sprout, Leaf, Zap,
-  ArrowRight, Car, Utensils, ShoppingBag, Recycle, Clock
+  Target, Check, Award, Sparkles, Sprout, Leaf,
+  ArrowRight, Clock
 } from "lucide-react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 import { Counter } from "@/components/shared/Counter"
+import { LEVEL_THRESHOLDS, LEVEL_NAMES } from "@/lib/constants"
+import { getCategoryIcon, getCategoryEmoji, getDifficultyStyles } from "@/lib/category-utils"
 
 interface Particle {
   id: number
@@ -44,11 +46,6 @@ const itemVariants = {
   }
 }
 
-// ─────────────────────────────────────────────
-// Level thresholds (mirror of AppContext)
-// ─────────────────────────────────────────────
-const LEVEL_THRESHOLDS = [0, 50, 120, 200, 300, 450]
-const LEVEL_NAMES = ["Empty Land", "Lush Grass", "Small Sprout", "Mature Tree", "Young Forest", "Thriving Ecosystem"]
 
 function getNextThreshold(pts: number): number {
   return LEVEL_THRESHOLDS.find((t) => t > pts) ?? LEVEL_THRESHOLDS[LEVEL_THRESHOLDS.length - 1]
@@ -63,35 +60,6 @@ function getCurrentThreshold(pts: number): number {
 // ─────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────
-function getCategoryEmoji(category: string) {
-  switch (category) {
-    case "transport": return "🚲"
-    case "food": return "🥗"
-    case "energy": return "🔌"
-    case "waste": return "♻️"
-    case "shopping": return "🛍️"
-    default: return "🌿"
-  }
-}
-
-function getCategoryIcon(category: string) {
-  switch (category) {
-    case "transport": return <Car className="h-3.5 w-3.5" />
-    case "food": return <Utensils className="h-3.5 w-3.5" />
-    case "energy": return <Zap className="h-3.5 w-3.5" />
-    case "waste": return <Recycle className="h-3.5 w-3.5" />
-    case "shopping": return <ShoppingBag className="h-3.5 w-3.5" />
-    default: return <Leaf className="h-3.5 w-3.5" />
-  }
-}
-
-function getDifficultyStyles(diff: string) {
-  switch (diff) {
-    case "easy": return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
-    case "medium": return "bg-amber-500/10 text-amber-600 dark:text-amber-500 border-amber-500/20"
-    default: return "bg-red-500/10 text-red-600 dark:text-red-500 border-red-500/20"
-  }
-}
 
 function getGardenPreviewVisual(lvl: number) {
   switch (lvl) {

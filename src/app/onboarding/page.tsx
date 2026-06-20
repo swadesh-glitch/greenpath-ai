@@ -5,123 +5,24 @@ import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useAppContext } from "@/store/AppContext"
 import { generateClimateProfile, OnboardingAnswers, GeneratedIdentity, ClimateTwinData, AIMission } from "@/lib/ai-engine"
-import { ArrowRight, Sparkles, Leaf, Zap, Bot, Car, Utensils, ShoppingBag, Globe, Check, BookOpen } from "lucide-react"
+import { ArrowRight, Sparkles, Leaf, Bot, Globe, Check, BookOpen } from "lucide-react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 import { PageBackground } from "@/components/shared/PageBackground"
+import { getCategoryIcon, getDifficultyPillClasses } from "@/lib/category-utils"
+import {
+  LOADING_PHRASES,
+  getQuestionText,
+  REACTION_VARIANTS,
+  TRANSPORT_OPTIONS,
+  FOOD_OPTIONS,
+  SHOPPING_OPTIONS,
+  ENERGY_OPTIONS,
+} from "./onboarding-data"
 
 
-
-const LOADING_PHRASES = [
-  "Talking to Clover, your green guide...",
-  "Looking at energy habits in your city...",
-  "Creating your unique green character...",
-  "Writing your personal nature story...",
-  "Planning 3 fun green challenges for you...",
-  "Building your future eco-friendly world...",
-]
 
 type OnboardingStep = "chat" | "loading" | "reveal"
-
-const getQuestionText = (index: number, userNameVal: string, cityVal: string) => {
-  if (cityVal) {
-    // no-op to satisfy unused variable warning
-  }
-  switch (index) {
-    case 0:
-      return "Welcome to GreenPath AI! I'm Clover, your friendly green guide. Let's start our eco-journey together. What is your name?"
-    case 1:
-      return `Nice to meet you, ${userNameVal}! What city or town do you live in?`
-    case 2:
-      return `Got it! How do you usually get around town?`
-    case 3:
-      return "What do you usually like to eat?"
-    case 4:
-      return "How do you like to shop for clothes, gadgets, or other items?"
-    case 5:
-      return "Lastly, how is your home powered and heated?"
-    default:
-      return ""
-  }
-}
-
-const REACTION_VARIANTS: Record<string, string[]> = {
-  gas_car: [
-    "Got it. Driving a gas car uses a lot of energy, but we can find easy ways to balance it!",
-    "Got it. Driving by yourself is common, let's see how we can make your trips greener.",
-    "Solo driving noted. Let's see how we can save energy on your travels."
-  ],
-  transit: [
-    "Awesome! Taking the bus or train is a great way to save energy.",
-    "Got it. Sharing rides keeps our city cleaner and less crowded.",
-    "Smart. Riding public transit is a huge win for the environment."
-  ],
-  walk_bike: [
-    "Amazing! Walking or biking is the healthiest choice for you and the planet.",
-    "Fantastic! Getting around on foot or wheels is as green as it gets.",
-    "Great habit! Walking and cycling keep the air fresh and clean."
-  ],
-  electric_car: [
-    "Smart. Driving an electric car keeps tailpipe smoke out of our air.",
-    "Excellent! Electric cars are clean and quiet.",
-    "Got it. Electric driving is a wonderful way to keep city air clean."
-  ],
-  meat_heavy: [
-    "Noted. Eating meat often uses a lot of land and water, but we can try simple swaps.",
-    "Got it. We can look at easy ways to add more plant-based meals.",
-    "Recorded. Even small changes can make a big difference."
-  ],
-  balanced: [
-    "A great balance! Mixing in more veggies is a wonderful, healthy choice.",
-    "Got it. A healthy mix of foods is great for you and nature.",
-    "Balanced! Every veggie meal helps save water and land."
-  ],
-  vegetarian: [
-    "Wonderful! A vegetarian diet is a major help to land and water.",
-    "Great habit! Eating vegetarian is a powerful way to help nature.",
-    "Awesome! Putting plants first does wonders for the earth."
-  ],
-  vegan: [
-    "Spectacular! A fully plant-based diet is incredibly kind to the earth.",
-    "Amazing! Going vegan is one of the best ways to care for the environment.",
-    "Exceptional! You're making a massive positive impact with your food."
-  ],
-  minimalist: [
-    "Wonderful! Buying only what you need is the best way to reduce waste.",
-    "Superb! Buying less is a super simple way to help the planet.",
-    "Outstanding! Choosing not to buy extra stuff keeps landfills empty."
-  ],
-  conscious: [
-    "Fantastic! Choosing eco-friendly items supports greener companies.",
-    "Smart! Supporting sustainable brands helps everyone make better products.",
-    "Great! Buying from green brands encourages clean production."
-  ],
-  frequent: [
-    "Acknowledged. Buying often keeps factories busy, but we can balance it.",
-    "Got it. We'll explore fun ways to reuse and recycle what we buy.",
-    "Recorded. We can explore green choices for our regular shopping."
-  ],
-  smart_home: [
-    "Excellent! Smart devices are great at saving power automatically.",
-    "Very smart! Thermostats and smart meters stop power waste before it starts.",
-    "Got it. Letting smart tech handle your power is a major help."
-  ],
-  solar: [
-    "Superb! You are making your own clean sunshine power.",
-    "Incredible! Solar panels are a brilliant way to power your home.",
-    "Phenomenal! You're using clean, endless energy from the sun."
-  ],
-  standard: [
-    "Understood. Most homes use standard power, and we can find simple ways to save.",
-    "Got it. We'll look at easy habits to lower your monthly power bills.",
-    "Standard power logged. Let's see how simple habits can save electricity."
-  ],
-  high_ac: [
-    "Noted. Heating and cooling use the most power at home.",
-    "Understood. Running heating or AC uses a lot of energy, but we can optimize.",
-    "Recorded. We'll find easy tips to keep you comfortable while saving energy."
-  ]
-}
 
 const playChimeSound = () => {
   try {
@@ -477,20 +378,6 @@ export default function Onboarding() {
     }
   }
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case "transport":
-        return <Car className="h-4 w-4" />
-      case "food":
-        return <Utensils className="h-4 w-4" />
-      case "energy":
-        return <Zap className="h-4 w-4" />
-      case "shopping":
-        return <ShoppingBag className="h-4 w-4" />
-      default:
-        return <Leaf className="h-4 w-4" />
-    }
-  }
 
   const fields: ("name" | "city" | "transport" | "food" | "shopping" | "energy")[] = [
     "name",
@@ -613,12 +500,7 @@ export default function Onboarding() {
                     {/* Transit Selection */}
                     {currentField === "transport" && (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
-                        {[
-                          { id: "gas_car", label: "Drive gas car alone", desc: "Private gas vehicle" },
-                          { id: "transit", label: "Take public transit", desc: "Train, bus, or subway" },
-                          { id: "walk_bike", label: "Walk or bike often", desc: "Active transit lifestyle" },
-                          { id: "electric_car", label: "Drive electric car (EV)", desc: "Zero exhaust EV" },
-                        ].map((o) => (
+                        {TRANSPORT_OPTIONS.map((o) => (
                           <motion.button
                             key={o.id}
                             onClick={() => handleSelectOption("transport", o.label, o.id)}
@@ -627,7 +509,7 @@ export default function Onboarding() {
                             className="p-4 rounded-2xl hover:border-emerald-500/55 transition-all cursor-pointer flex flex-col gap-1 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none glass-panel"
                           >
                             <span className="font-black text-xs text-white flex items-center gap-1.5">
-                              <Car className="h-4 w-4 text-emerald-400" />
+                              {getCategoryIcon("transport", "h-4 w-4 text-emerald-400")}
                               {o.label}
                             </span>
                             <span className="text-[10px] text-sand-400 font-bold leading-normal">{o.desc}</span>
@@ -639,12 +521,7 @@ export default function Onboarding() {
                     {/* Diet Selection */}
                     {currentField === "food" && (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
-                        {[
-                          { id: "meat_heavy", label: "Meat-heavy diet", desc: "Poultry or beef most days" },
-                          { id: "balanced", label: "Balanced flexitarian", desc: "Moderate mix of diet items" },
-                          { id: "vegetarian", label: "Vegetarian lifestyle", desc: "Egg & dairy, no meat" },
-                          { id: "vegan", label: "Strict vegan plates", desc: "100% plant-based inputs" },
-                        ].map((o) => (
+                        {FOOD_OPTIONS.map((o) => (
                           <motion.button
                             key={o.id}
                             onClick={() => handleSelectOption("food", o.label, o.id)}
@@ -653,7 +530,7 @@ export default function Onboarding() {
                             className="p-4 rounded-2xl hover:border-emerald-500/55 transition-all cursor-pointer flex flex-col gap-1 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none glass-panel"
                           >
                             <span className="font-black text-xs text-white flex items-center gap-1.5">
-                              <Utensils className="h-4 w-4 text-emerald-400" />
+                              {getCategoryIcon("food", "h-4 w-4 text-emerald-400")}
                               {o.label}
                             </span>
                             <span className="text-[10px] text-sand-400 font-bold leading-normal">{o.desc}</span>
@@ -665,11 +542,7 @@ export default function Onboarding() {
                     {/* Shopping Habits Selection */}
                     {currentField === "shopping" && (
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto">
-                        {[
-                          { id: "minimalist", label: "Minimalist", desc: "Rarely buy new items" },
-                          { id: "conscious", label: "Eco-Conscious", desc: "Look for green brands" },
-                          { id: "frequent", label: "Frequent buyer", desc: "Enjoy new items often" },
-                        ].map((o) => (
+                        {SHOPPING_OPTIONS.map((o) => (
                           <motion.button
                             key={o.id}
                             onClick={() => handleSelectOption("shopping", o.label, o.id)}
@@ -678,7 +551,7 @@ export default function Onboarding() {
                             className="p-4 rounded-2xl hover:border-emerald-500/55 transition-all cursor-pointer flex flex-col gap-1 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none glass-panel"
                           >
                             <span className="font-black text-xs text-white flex items-center gap-1.5">
-                              <ShoppingBag className="h-4 w-4 text-emerald-400" />
+                              {getCategoryIcon("shopping", "h-4 w-4 text-emerald-400")}
                               {o.label}
                             </span>
                             <span className="text-[10px] text-sand-400 font-bold leading-normal">{o.desc}</span>
@@ -690,12 +563,7 @@ export default function Onboarding() {
                     {/* Home Energy Selection */}
                     {currentField === "energy" && (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
-                        {[
-                          { id: "smart_home", label: "Smart efficiency setup", desc: "Smart meters and thermostats" },
-                          { id: "solar", label: "Solar clean power", desc: "Roof panel clean offsetting" },
-                          { id: "standard", label: "Standard home grid", desc: "Standard residential bills" },
-                          { id: "high_ac", label: "High climate heating", desc: "Heavier temperature loads" },
-                        ].map((o) => (
+                        {ENERGY_OPTIONS.map((o) => (
                           <motion.button
                             key={o.id}
                             onClick={() => handleSelectOption("energy", o.label, o.id)}
@@ -704,7 +572,7 @@ export default function Onboarding() {
                             className="p-4 rounded-2xl hover:border-emerald-500/55 transition-all cursor-pointer flex flex-col gap-1 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none glass-panel"
                           >
                             <span className="font-black text-xs text-white flex items-center gap-1.5">
-                              <Zap className="h-4 w-4 text-emerald-400" />
+                              {getCategoryIcon("energy", "h-4 w-4 text-emerald-400")}
                               {o.label}
                             </span>
                             <span className="text-[10px] text-sand-400 font-bold leading-normal">{o.desc}</span>
@@ -1156,13 +1024,7 @@ export default function Onboarding() {
                               <div>
                                 <h5 className="font-extrabold text-white flex items-center gap-1.5">
                                   {m.title}
-                                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase ${
-                                    m.difficulty === "easy" 
-                                      ? "bg-emerald-500/15 text-emerald-400" 
-                                      : m.difficulty === "medium" 
-                                      ? "bg-amber-500/15 text-amber-400" 
-                                      : "bg-red-500/15 text-red-400"
-                                  }`}>
+                                  <span className={`text-[8px] font-black px-1.5 py-0.5 rounded uppercase ${getDifficultyPillClasses(m.difficulty)}`}>
                                     {m.difficulty}
                                   </span>
                                 </h5>
