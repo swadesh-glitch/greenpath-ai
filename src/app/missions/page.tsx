@@ -168,6 +168,7 @@ export default function MissionsHub() {
   const completedIdsRef = useRef<Set<string>>(new Set())
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
   }, [])
 
@@ -215,6 +216,7 @@ export default function MissionsHub() {
     const x = rect.left + rect.width / 2 - 15
     const y = rect.top - 20
     const label = `+${amount} pts`
+    // eslint-disable-next-line react-hooks/purity
     const p: Particle = { id: Date.now(), x, y, amount: label, offsetX: Math.random() * 40 - 20 }
     setParticles((prev) => [...prev, p])
     setTimeout(() => setParticles((prev) => prev.filter((pp) => pp.id !== p.id)), 1300)
@@ -252,11 +254,6 @@ export default function MissionsHub() {
   const progressPct = nextThreshold === curThreshold
     ? 100
     : Math.round(((points - curThreshold) / (nextThreshold - curThreshold)) * 100)
-
-  const totalCO2 = Number(
-    ((dailyActions.filter((a) => a.completed).reduce((s, a) => s + a.co2SavingsKg, 0)) +
-      (missions.filter((m) => m.completed).reduce((s, m) => s + m.co2SavingsKg, 0))).toFixed(1)
-  )
 
   if (!mounted || !isOnboarded) {
     return (

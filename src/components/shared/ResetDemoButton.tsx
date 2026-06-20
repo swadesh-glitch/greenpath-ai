@@ -20,6 +20,7 @@ export const ResetDemoButton: React.FC = () => {
         window.location.hostname === "localhost" ||
         window.location.hostname === "127.0.0.1"
       ) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setShowButton(true)
       }
     }

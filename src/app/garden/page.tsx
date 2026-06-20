@@ -27,6 +27,7 @@ export default function CarbonGarden() {
   const [previewLevel, setPreviewLevel] = useState<number | null>(null)
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
   }, [])
   

@@ -172,6 +172,7 @@ const EarthMesh: React.FC<{ progress: number }> = ({ progress }) => {
 
     const texture = new THREE.CanvasTexture(canvas)
     texture.colorSpace = THREE.SRGBColorSpace
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEarthTexture(texture)
   }, [progress])
 
@@ -208,6 +209,7 @@ const EarthMesh: React.FC<{ progress: number }> = ({ progress }) => {
     }
 
     const texture = new THREE.CanvasTexture(canvas)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setBumpTexture(texture)
   }, [])
 
@@ -249,6 +251,7 @@ const EarthMesh: React.FC<{ progress: number }> = ({ progress }) => {
     ctx.fillRect(0, 380, canvas.width, 35)
 
     const texture = new THREE.CanvasTexture(canvas)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCloudsTexture(texture)
   }, [progress])
 
@@ -314,13 +317,18 @@ const SmokeParticles: React.FC<{ progress: number }> = ({ progress }) => {
   
   const particleCount = 220
   const positions = React.useMemo(() => {
+    let seed = 12345
+    const rnd = () => {
+      const x = Math.sin(seed++) * 10000
+      return x - Math.floor(x)
+    }
     const arr = new Float32Array(particleCount * 3)
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const u = Math.random()
-      const v = Math.random()
+      const u = rnd()
+      const v = rnd()
       const theta = u * 2.0 * Math.PI
       const phi = Math.acos(2.0 * v - 1.0)
-      const r = 2.4 + Math.random() * 1.8 // Shell boundary
+      const r = 2.4 + rnd() * 1.8 // Shell boundary
       
       arr[i] = r * Math.sin(phi) * Math.cos(theta)
       arr[i + 1] = r * Math.sin(phi) * Math.sin(theta)

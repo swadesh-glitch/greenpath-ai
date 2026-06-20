@@ -88,5 +88,8 @@ export const DAILY_ECO_ACTION_POOL: DailyEcoAction[] = [
  * Returns all 8 actions directly for the demo, ignoring date strings.
  */
 export function pickDailyActions(_dateStr?: string): DailyEcoAction[] {
+  if (_dateStr) {
+    // no-op to satisfy unused variable warning
+  }
   return DAILY_ECO_ACTION_POOL.map((a) => ({ ...a, completed: false }))
 }

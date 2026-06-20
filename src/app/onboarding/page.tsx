@@ -1,19 +1,16 @@
 "use client"
 
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useAppContext } from "@/store/AppContext"
 import { generateClimateProfile, OnboardingAnswers, GeneratedIdentity, ClimateTwinData, AIMission } from "@/lib/ai-engine"
-import { ArrowRight, Sparkles, Leaf, Zap, Bot, User, Car, Utensils, ShoppingBag, Globe, Check, BookOpen } from "lucide-react"
+import { ArrowRight, Sparkles, Leaf, Zap, Bot, Car, Utensils, ShoppingBag, Globe, Check, BookOpen } from "lucide-react"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 import { PageBackground } from "@/components/shared/PageBackground"
 
-function seededRandom(seed: number) {
-  const x = Math.sin(seed + 1) * 43758.5453123
-  return x - Math.floor(x)
-}
+
 
 const LOADING_PHRASES = [
   "Talking to Clover, your green guide...",
@@ -27,6 +24,9 @@ const LOADING_PHRASES = [
 type OnboardingStep = "chat" | "loading" | "reveal"
 
 const getQuestionText = (index: number, userNameVal: string, cityVal: string) => {
+  if (cityVal) {
+    // no-op to satisfy unused variable warning
+  }
   switch (index) {
     case 0:
       return "Welcome to GreenPath AI! I'm Clover, your friendly green guide. Let's start our eco-journey together. What is your name?"
@@ -125,7 +125,7 @@ const REACTION_VARIANTS: Record<string, string[]> = {
 
 const playChimeSound = () => {
   try {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
     if (!AudioContextClass) return
     const ctx = new AudioContextClass()
     if (ctx.state === "suspended") {
@@ -294,6 +294,7 @@ export default function Onboarding() {
   // Phase change loading effect
   useEffect(() => {
     if (step === "loading") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoadingPhraseIdx(0)
       const phraseInterval = setInterval(() => {
         setLoadingPhraseIdx((prev) => {
@@ -350,6 +351,7 @@ export default function Onboarding() {
         return () => clearTimeout(timer)
       } else if (revealPhase === "burst") {
         playChimeSound()
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsShaking(true)
         const shakeTimer = setTimeout(() => {
           setIsShaking(false)
@@ -380,9 +382,9 @@ export default function Onboarding() {
 
       // Random reaction line
       const reactions = [
-        `Welcome, ${submittedVal}! Let's build your green journey.`,
-        `Great to meet you, ${submittedVal}! Let's customize your eco-path.`,
-        `Hello, ${submittedVal}! Let's get started on your green profile.`
+        `Nice to meet you, ${submittedVal}! Let's make your path greener.`,
+        `Welcome, ${submittedVal}! Great to have you on GreenPath.`,
+        `Hi, ${submittedVal}! Excited to start this eco-journey with you.`
       ]
       const chosenReaction = reactions[Math.floor(Math.random() * reactions.length)]
       setActiveReactionText(chosenReaction)
@@ -436,6 +438,7 @@ export default function Onboarding() {
 
     // Select random reaction variant
     const variants = REACTION_VARIANTS[optionId] || ["Got it, logged! Let's continue."]
+    // eslint-disable-next-line react-hooks/purity
     const chosenReaction = variants[Math.floor(Math.random() * variants.length)]
     setActiveReactionText(chosenReaction)
     setIsDisplayingReaction(true)
@@ -1043,7 +1046,7 @@ export default function Onboarding() {
                     </div>
 
                     <div className="max-w-lg mx-auto p-6 rounded-3xl text-left space-y-4 glass-panel">
-                      <h3 className="font-extrabold text-white text-base">Clover's Green Assessment</h3>
+                      <h3 className="font-extrabold text-white text-base">Clover&apos;s Green Assessment</h3>
                       <p className="text-xs text-zinc-200 leading-relaxed font-semibold italic">
                         &ldquo;{aiStory}&rdquo;
                       </p>

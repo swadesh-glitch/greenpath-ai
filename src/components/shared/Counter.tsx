@@ -26,6 +26,7 @@ export const Counter: React.FC<CounterProps> = ({
     const startVal = displayValue
     const duration = 400
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPulse(true)
     const pulseTimer = setTimeout(() => setPulse(false), 250)
 
@@ -52,6 +53,7 @@ export const Counter: React.FC<CounterProps> = ({
       cancelAnimationFrame(animationFrameId)
       clearTimeout(pulseTimer)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   return (

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { useAppContext } from "@/store/AppContext"
-import { User, Calendar, Sparkles, RefreshCw, Sprout, Zap, Bike, Utensils, Shield, Leaf } from "lucide-react"
+import { Calendar, Sparkles, RefreshCw, Sprout, Zap, Bike, Utensils, Shield, Leaf } from "lucide-react"
 import { PageBackground } from "@/components/shared/PageBackground"
 
 const containerVariants = {
@@ -68,6 +68,7 @@ export default function ClimateIdentityDashboard() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
   }, [])
 

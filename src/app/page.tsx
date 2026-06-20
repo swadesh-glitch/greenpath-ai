@@ -278,17 +278,17 @@ export default function LandingPage() {
 
         {/* Tab Selectors */}
         <div className="flex justify-center gap-3 p-1.5 glass-panel-light dark:glass-panel-dark rounded-2xl max-w-md mx-auto">
-          {[
+          {([
             { id: "identity", label: "Climate Identity", icon: Shield },
             { id: "missions", label: "Missions", icon: Target },
             { id: "garden", label: "Carbon Garden", icon: Sprout },
-          ].map((tab) => {
+          ] as const).map((tab) => {
             const Icon = tab.icon
             const isSelected = activeTab === tab.id
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id)}
                 className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   isSelected ? "text-emerald-600 dark:text-emerald-400" : "text-sand-800 dark:text-sand-200 opacity-70"
                 }`}

@@ -51,6 +51,7 @@ export default function ClimateAnalysis() {
   const [cloudsX, setCloudsX] = useState(0)    // clouds offset %
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true)
     if (!isOnboarded) router.push("/onboarding")
   }, [isOnboarded, router])

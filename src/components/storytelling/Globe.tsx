@@ -205,7 +205,7 @@ const Hotspots2D: React.FC<Hotspots2DProps> = ({ progress, earthAngle }) => {
                 opacity: arc.opacity * 0.9,
                 transition: "opacity 0.2s ease",
                 animation: "flow 2s linear infinite"
-              } as React.CSSProperties & { [key: string]: any }}
+              } as React.CSSProperties}
             />
           </g>
         ))}
