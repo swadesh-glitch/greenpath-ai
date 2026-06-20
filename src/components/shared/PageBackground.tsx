@@ -5,6 +5,7 @@
 // SSR hydration mismatches in Next.js.
 import React, { useEffect, useState } from "react"
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion"
+import Image from "next/image"
 
 interface PageBackgroundProps {
   image: string
@@ -68,11 +69,18 @@ export const PageBackground: React.FC<PageBackgroundProps> = ({ image }) => {
               animate={{ opacity: 0.85 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-kb"
-              style={{
-                backgroundImage: `url('${image}')`,
-              }}
-            />
+              className="absolute inset-0 animate-kb"
+            >
+              <Image
+                src={image}
+                alt="Cinematic nature background"
+                fill
+                priority={image === "/backgrounds/landing-bg.jpg" || image === "/backgrounds/onboarding-bg.jpg"}
+                sizes="100vw"
+                className="object-cover"
+                quality={85}
+              />
+            </motion.div>
           </AnimatePresence>
           
           {/* Cinematic Duotone Grading: warm highlights in light, subtle teal in shadows */}
