@@ -43,7 +43,7 @@ describe("Navigation Component", () => {
   })
 
   it("renders non-onboarded navigation links", () => {
-    let container
+    let container: HTMLElement
     act(() => {
       const rendered = render(
         <AppProvider>
@@ -83,7 +83,7 @@ describe("Navigation Component", () => {
   })
 
   it("passes accessibility compliance checks", async () => {
-    let container
+    let container: HTMLElement
     act(() => {
       const rendered = render(
         <AppProvider>
@@ -92,7 +92,7 @@ describe("Navigation Component", () => {
       )
       container = rendered.container
     })
-    const results = await axe(container)
+    const results = await axe(container!)
     expect(results.violations).toEqual([])
   })
 })
@@ -120,12 +120,12 @@ describe("Counter Component", () => {
   })
 
   it("passes accessibility compliance checks", async () => {
-    let container
+    let container: HTMLElement
     act(() => {
       const rendered = render(<Counter value={100} />)
       container = rendered.container
     })
-    const results = await axe(container)
+    const results = await axe(container!)
     expect(results.violations).toEqual([])
   })
 })
@@ -154,7 +154,7 @@ describe("ResetDemoButton Component", () => {
   })
 
   it("passes accessibility compliance checks", async () => {
-    let container
+    let container: HTMLElement
     act(() => {
       const rendered = render(
         <AppProvider>
@@ -163,7 +163,7 @@ describe("ResetDemoButton Component", () => {
       )
       container = rendered.container
     })
-    const results = await axe(container)
+    const results = await axe(container!)
     expect(results.violations).toEqual([])
   })
 })

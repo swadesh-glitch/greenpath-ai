@@ -1,3 +1,7 @@
+/**
+ * @file weekly-challenges.ts
+ * @responsibility Data definitions, challenge pools, and weekly keys calculation utilities.
+ */
 export interface WeeklyChallenge {
   id: string
   title: string

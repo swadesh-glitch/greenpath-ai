@@ -1,3 +1,7 @@
+/**
+ * @file climate-identities.ts
+ * @responsibility Data definitions and configuration list for static Climate Identity archetypes.
+ */
 export interface ClimateIdentity {
   id: string
   title: string

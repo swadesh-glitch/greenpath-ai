@@ -1,3 +1,7 @@
+/**
+ * @file mock-missions.ts
+ * @responsibility Data definitions and template mocks for general carbon-saving missions.
+ */
 export interface Mission {
   id: string
   title: string

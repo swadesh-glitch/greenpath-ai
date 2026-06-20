@@ -77,7 +77,7 @@ function loadFromStorage(): Partial<PersistedState> {
     const result = PersistedStateSchema.safeParse(parsed)
     if (!result.success) {
       if (process.env.NODE_ENV !== "production") {
-        console.warn("localStorage schema validation failed, resetting state:", result.error)
+        console.warn("Invalid persisted state, resetting to defaults:", result.error)
       }
       return {}
     }

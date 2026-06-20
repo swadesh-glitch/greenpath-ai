@@ -1,3 +1,7 @@
+/**
+ * @file mock-user.ts
+ * @responsibility Data definitions and default mocks representing user details and accumulated metrics.
+ */
 export interface UserProfile {
   id: string
   name: string

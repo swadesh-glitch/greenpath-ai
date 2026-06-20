@@ -1,3 +1,7 @@
+/**
+ * @file daily-eco-actions.ts
+ * @responsibility Data interfaces and generation lists for standard recurring daily eco actions.
+ */
 export interface DailyEcoAction {
   id: string
   title: string
