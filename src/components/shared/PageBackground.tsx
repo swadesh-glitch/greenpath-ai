@@ -1,16 +1,44 @@
 "use client"
 
-// NOTE: @keyframes kb-zoom, .animate-kb and .bg-noise-shared are defined
-// in src/app/globals.css — keeping them here as JSX <style> tags caused
-// SSR hydration mismatches in Next.js.
+/**
+ * @file PageBackground.tsx
+ * @responsibility Cinematic full-viewport parallax background component rendered
+ * behind all page content. Applies Ken Burns zoom animation, mouse-driven parallax
+ * tilt, duotone colour grading, depth-of-field blur, and a moving grain overlay.
+ *
+ * The component is client-only: it returns `null` on the server / first paint
+ * to avoid a Framer Motion AnimatePresence hydration mismatch with Next.js SSR.
+ */
 import React, { useEffect, useState } from "react"
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion"
 import Image from "next/image"
 
+/**
+ * Props for the {@link PageBackground} component.
+ *
+ * @property image - Absolute path to the background image asset, e.g.
+ *   `"/backgrounds/onboarding-bg.jpg"`. Changing this prop triggers a
+ *   cross-fade transition via Framer Motion `AnimatePresence`.
+ */
 interface PageBackgroundProps {
   image: string
 }
 
+/**
+ * Renders a fixed, full-viewport cinematic background layer.
+ *
+ * **Visual effects applied (in z-order):**
+ * 1. Ken Burns zoom animation via CSS `@keyframes kb-zoom`
+ * 2. Mouse-tracking parallax tilt via Framer Motion springs
+ * 3. `AnimatePresence` cross-fade when `image` prop changes
+ * 4. Duotone colour grading (warm highlights, teal shadows)
+ * 5. Photographic depth-of-field blur gradient at the top
+ * 6. Cinematic scrim darkening the card content region
+ * 7. Radial dark vignette
+ * 8. Moving grain overlay (opacity 2.5%)
+ *
+ * @param props - {@link PageBackgroundProps}
+ */
 export const PageBackground: React.FC<PageBackgroundProps> = ({ image }) => {
   // Must be called unconditionally (Rules of Hooks)
   const mouseX = useMotionValue(0)
